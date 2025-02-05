@@ -1,0 +1,9 @@
+@font-face {
+	font-family: 'Pixelated MS Sans Serif';
+	src: url('./fonts/MS_Sans_Serif.ttf');
+}
+
+@font-face {
+	font-family: 'Pixelated MS Sans Serif Bold';
+	src: url(./fonts//MS_Sans_Serif_Bold.ttf);
+}
