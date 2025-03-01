@@ -90,11 +90,13 @@
 					{@const ToolbarComponent = toolbar}
 					<ToolbarComponent />
 				{/if}
-				{#if children}
-					<div>{@render children()}</div>
-				{:else}
-					<div id="empty" />
-				{/if}
+				<div class="children">
+					{#if children}
+						{@render children()}
+					{:else}
+						<div id="empty" />
+					{/if}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -102,12 +104,8 @@
 
 <style>
 	#empty {
-		height: calc(100% - 2px);
-		width: calc(100% - 2px);
+		height: 100%;
 		background-color: #ffffff;
-		border-width: 1px;
-		border-style: solid;
-		border-color: #808080 #dbdbdb #dbdbdb #808080;
 	}
 	.resizable {
 		position: relative;
@@ -206,7 +204,7 @@
 		justify-content: space-between;
 		padding-left: 2px;
 		padding-right: 2px;
-		margin-bottom: 3px;
+		margin-bottom: 1px;
 	}
 	.title {
 		display: flex;
@@ -236,9 +234,14 @@
 		width: 50px;
 	}
 	.content {
-		height: calc(100% - 23px);
+		height: calc(100% - 21px);
+		display: flex;
+		flex-direction: column;
+	}
+	.children {
+		flex: 1;
 		border-width: 1px;
 		border-style: solid;
-		border-color: #000000 #ffffff #ffffff #000000;
+		border-color: #808080 #dbdbdb #dbdbdb #808080;
 	}
 </style>
