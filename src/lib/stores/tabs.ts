@@ -1,3 +1,2 @@
 import { writable } from 'svelte/store';
-type TabCache = Array<string>;
-export const tabCache = writable<TabCache>([]);
+export const tabCache = writable<Array<string>>([]);
