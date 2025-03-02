@@ -80,6 +80,5 @@
 		left: 0;
 		top: 0;
 		z-index: 4500;
-		margin: 32px 64px;
 	}
 </style>
