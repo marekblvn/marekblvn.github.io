@@ -52,7 +52,7 @@
 		border-style: solid;
 		border-color: #000000 #ffffff #ffffff #000000;
 		background: repeating-conic-gradient(#f0f0f0 0deg 90deg, #dbdbdb 90deg 180deg);
-		background-size: 2px 2px;
+		background-size: 5px 5px;
 	}
 	button:focus-within .text {
 		outline: dotted 1px #000;

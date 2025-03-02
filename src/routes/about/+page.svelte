@@ -1,1 +1,5 @@
-<div style="width: 90%; height: 90%; background-color: aqua;">About Page</div>
+<script>
+	import Window from '$lib/components/window/Window.svelte';
+</script>
+
+<Window title="About" icon="computer" />

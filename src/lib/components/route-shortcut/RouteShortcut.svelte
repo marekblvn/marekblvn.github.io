@@ -1,6 +1,15 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { activeTabCache } from '$lib/stores/active-tab';
 	import { iconCache } from '$lib/stores/icons';
-	let { icon = 'directory_closed', label = 'Unnamed', route } = $props();
+	import { tabCache } from '$lib/stores/tabs';
+	interface Props {
+		label?: string;
+		icon?: string;
+		route: string;
+		onClick?: () => void;
+	}
+	let { icon = 'directory_closed', label = 'Unnamed', route, onClick = () => {} }: Props = $props();
 	let iconAsset: string = $state('');
 
 	iconCache.update((cache) => {
@@ -13,6 +22,17 @@
 		}
 		return cache;
 	});
+
+	function handleDoubleClick() {
+		tabCache.update((cache) => {
+			if (!cache.some((tab) => tab.title === label)) {
+				return [...cache, { title: label, icon }];
+			}
+			return cache;
+		});
+		activeTabCache.set(label);
+		goto(route);
+	}
 </script>
 
 <a
@@ -23,7 +43,7 @@
 		e.preventDefault();
 		return false;
 	}}
-	ondblclick={() => (location = route)}
+	ondblclick={handleDoubleClick}
 >
 	<div class="rect">
 		<img src={iconAsset} alt="icon" class="icon" />
