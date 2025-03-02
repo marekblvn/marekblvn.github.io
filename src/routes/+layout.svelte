@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import '$lib/assets/fonts.css';
 	import PanelSettings from '$lib/components/panel-settings/PanelSettings.svelte';
+	import PanelTabs from '$lib/components/panel-tabs/PanelTabs.svelte';
 	import RouteShortcut from '$lib/components/route-shortcut/RouteShortcut.svelte';
 	import SimpleDivider from '$lib/components/simple-divider/SimpleDivider.svelte';
 	import StartButton from '$lib/components/start-button/StartButton.svelte';
@@ -10,20 +11,22 @@
 
 <div class="main">
 	<div class="main-page">
-		{#if $page.url.pathname !== '/'}
+		{#if page.url.pathname !== '/'}
 			<div class="apps">
 				{@render children()}
 			</div>
 		{/if}
 		<div class="desktop">
 			<RouteShortcut icon="computer" label="About" route="/about" />
-			<RouteShortcut route="/" label="Lorem ipsum dolor sit amet" />
+			<RouteShortcut route="/projects" label="Projects" />
 		</div>
 	</div>
 	<div class="bottom-panel">
 		<StartButton />
 		<SimpleDivider />
-		<div style="width: 100%"></div>
+		<div style="width: 100%">
+			<PanelTabs />
+		</div>
 		<SimpleDivider />
 		<PanelSettings />
 	</div>

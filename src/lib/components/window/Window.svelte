@@ -2,6 +2,9 @@
 	import { onMount, type Component, type Snippet } from 'svelte';
 	import { iconCache } from '$lib/stores/icons';
 	import WindowButton from '../window-button/WindowButton.svelte';
+	import { activeTabCache } from '$lib/stores/active-tab';
+	import { goto } from '$app/navigation';
+	import { tabCache } from '$lib/stores/tabs';
 
 	interface Props {
 		children?: Snippet;
@@ -43,7 +46,8 @@
 	});
 
 	function minimizeWindow() {
-		return;
+		activeTabCache.set('');
+		goto('/');
 	}
 
 	function toggleMaximized() {
@@ -52,7 +56,8 @@
 
 	function closeWindow() {
 		onCloseWindow();
-		window.history.back();
+		tabCache.update((cache) => cache.filter((tab) => tab.title !== title));
+		goto('/');
 	}
 </script>
 
