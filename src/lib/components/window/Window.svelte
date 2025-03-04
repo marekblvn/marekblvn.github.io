@@ -26,7 +26,7 @@
 	let maximized = $state(false);
 	let isResizing = $state(false);
 	let isDragging = $state(false);
-	let dimensions = $state({ width: 300, height: 300 });
+	let dimensions = $state({ width: 900, height: 600 });
 	let savedDimensions = $state({ width: 300, height: 300 });
 	let initialMouseX = $state(0);
 	let initialMouseY = $state(0);
