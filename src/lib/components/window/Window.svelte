@@ -368,5 +368,6 @@
 		border-style: solid;
 		border-color: #808080 #dbdbdb #dbdbdb #808080;
 		background-color: #ffffff;
+		overflow: scroll;
 	}
 </style>
