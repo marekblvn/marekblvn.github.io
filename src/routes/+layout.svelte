@@ -1,21 +1,32 @@
 <script lang="ts">
-	import { page } from '$app/state';
+	import { page } from '$app/stores';
 	import '$lib/assets/fonts.css';
 	import PanelSettings from '$lib/components/panel-settings/PanelSettings.svelte';
 	import PanelTabs from '$lib/components/panel-tabs/PanelTabs.svelte';
 	import RouteShortcut from '$lib/components/route-shortcut/RouteShortcut.svelte';
 	import SimpleDivider from '$lib/components/simple-divider/SimpleDivider.svelte';
 	import StartButton from '$lib/components/start-button/StartButton.svelte';
+	import { activeTabCache } from '$lib/stores/active-tab';
+	import { onMount } from 'svelte';
 	let { children } = $props();
+	onMount(() => {
+		$effect(() => {
+			page.subscribe((value) => {
+				if (value.url.pathname === '/') {
+					activeTabCache.set('/');
+				}
+			});
+		});
+	});
 </script>
 
 <div class="main">
 	<div class="main-page">
-		{#if page.url.pathname !== '/'}
-			<div class="apps">
-				{@render children()}
-			</div>
-		{/if}
+		<!-- {#if page.url.pathname !== '/'} -->
+		<div class="apps">
+			{@render children()}
+		</div>
+		<!-- {/if} -->
 		<div class="desktop">
 			<RouteShortcut icon="computer" label="About" route="/about" />
 			<RouteShortcut route="/projects" label="Projects" />
