@@ -40,12 +40,12 @@
 		border-color: #808080 #fff #fff #808080;
 	}
 	.icon {
-		background-image: url('../../assets/images/browse-ui-icons-grayscale.png');
+		background-image: url('/src/lib/static/images/browse-ui-icons-grayscale.png');
 		width: 20px;
 		height: 20px;
 	}
 	.tool:hover:not(:disabled) .icon {
-		background-image: url('../../assets//images/browse-ui-icons.png');
+		background-image: url('/src/lib/static/images/browse-ui-icons.png');
 	}
 	.label {
 		font-size: 11px;

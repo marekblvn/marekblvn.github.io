@@ -17,7 +17,7 @@
 		tabCache.update((cache) => {
 			const tab: Tab | undefined = cache.find((value) => address.includes(value.title));
 			if (tab) {
-				iconAsset = `/src/lib/assets/icons/${tab.icon}.ico`;
+				iconAsset = `/src/lib/static/icons/${tab.icon}.ico`;
 			}
 			return cache;
 		});

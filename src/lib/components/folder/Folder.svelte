@@ -1,23 +1,9 @@
 <script lang="ts">
-	import { iconCache } from '$lib/stores/icons';
-
 	let { label, icon, onClick } = $props();
-	let iconAsset: string = $state('');
-
-	iconCache.update((cache) => {
-		if (cache[icon]) {
-			iconAsset = cache[icon];
-		} else {
-			const uri = `/src/lib/assets/icons/${icon}.ico`;
-			cache[icon] = uri;
-			iconAsset = uri;
-		}
-		return cache;
-	});
 </script>
 
 <div class="rect" ondblclick={onClick}>
-	<img src={iconAsset} alt="icon" class="icon" />
+	<img src={`/src/lib/static/icons/${icon}.ico`} alt="" class="icon" />
 	<div class="label-div">
 		{label}
 	</div>

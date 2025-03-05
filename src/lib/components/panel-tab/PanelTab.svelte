@@ -11,18 +11,7 @@
 		isActive?: boolean;
 	}
 	let { icon, title, isActive = false }: Props = $props();
-	let iconAsset = $state('');
 	onMount(() => {
-		iconCache.update((cache) => {
-			if (cache[icon]) {
-				iconAsset = cache[icon];
-			} else {
-				const uri = `/src/lib/assets/icons/${icon}.ico`;
-				cache[icon] = uri;
-				iconAsset = uri;
-			}
-			return cache;
-		});
 		$effect(() => {
 			tabCache.subscribe((cache) => {
 				const tab = cache.find((tab) => tab.title === title);
@@ -38,7 +27,7 @@
 </script>
 
 <button class="tab" class:active={isActive} onclick={onClick}>
-	<img src={iconAsset} alt="" />
+	<img src={`/src/lib/static/icons/${icon}.ico`} alt="" />
 	<div class="tab-title">{title}</div>
 </button>
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import '$lib/assets/fonts.css';
+	import '$lib/static/fonts.css';
 	import PanelSettings from '$lib/components/panel-settings/PanelSettings.svelte';
 	import PanelTabs from '$lib/components/panel-tabs/PanelTabs.svelte';
 	import RouteShortcut from '$lib/components/route-shortcut/RouteShortcut.svelte';
