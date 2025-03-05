@@ -30,6 +30,8 @@
 		<div class="desktop">
 			<RouteShortcut icon="computer" label="About" route="/about" />
 			<RouteShortcut route="/projects" label="Projects" />
+			<RouteShortcut route="/game-of-life" label="Game of Life" icon="executable" />
+			<RouteShortcut route="/langtons-ant" label="Langton's Ant" icon="executable" />
 		</div>
 	</div>
 	<div class="bottom-panel">
