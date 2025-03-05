@@ -5,7 +5,6 @@
 	let repositories: Array<any> = $state([]);
 	onMount(async () => {
 		await loadRepositories();
-		await loadReadme();
 	});
 
 	async function loadRepositories() {
@@ -13,13 +12,6 @@
 		const response = await fetch(url);
 		const data: Array<any> = await response.json();
 		repositories = data;
-	}
-
-	async function loadReadme() {
-		const url = 'https://api.github.com/repos/marekblvn/game-of-life/readme';
-		const response = await fetch(url);
-		const data = await response.json();
-		console.log(data);
 	}
 
 	function handleDoubleClickFolder(repoName: string) {

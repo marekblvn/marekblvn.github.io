@@ -37,6 +37,8 @@
 	.markdown {
 		margin: auto;
 		padding: 12px;
+		font-size: 14px;
+		letter-spacing: 0.3px;
 	}
 	button {
 		border-width: 1px;

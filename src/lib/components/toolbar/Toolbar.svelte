@@ -29,7 +29,10 @@
 	}
 	let fileButton: HTMLButtonElement | null = $state(null);
 	let editButton: HTMLButtonElement | null = $state(null);
-	let searchButton: HTMLButtonElement | null = $state(null);
+	let viewButton: HTMLButtonElement | null = $state(null);
+	let goButton: HTMLButtonElement | null = $state(null);
+	let favoritesButton: HTMLButtonElement | null = $state(null);
+	let toolsButton: HTMLButtonElement | null = $state(null);
 	let helpButton: HTMLButtonElement | null = $state(null);
 </script>
 
@@ -49,11 +52,32 @@
 		<span>E</span>dit
 	</button>
 	<button
-		class:active={activePopover === 'search'}
-		onclick={() => togglePopover('search')}
-		bind:this={searchButton}
+		class:active={activePopover === 'view'}
+		onclick={() => togglePopover('view')}
+		bind:this={viewButton}
 	>
-		<span>S</span>earch
+		<span>V</span>iew
+	</button>
+	<button
+		class:active={activePopover === 'go'}
+		onclick={() => togglePopover('go')}
+		bind:this={goButton}
+	>
+		<span>G</span>o
+	</button>
+	<button
+		class:active={activePopover === 'favorites'}
+		onclick={() => togglePopover('favorites')}
+		bind:this={favoritesButton}
+	>
+		<span>F</span>avorites
+	</button>
+	<button
+		class:active={activePopover === 'tools'}
+		onclick={() => togglePopover('tools')}
+		bind:this={toolsButton}
+	>
+		<span>T</span>ools
 	</button>
 	<button
 		class:active={activePopover === 'help'}
@@ -94,18 +118,63 @@
 		</div>
 	</div>
 {/if}
-{#if activePopover === 'search'}
-	{@const popoverPosition = getPopoverPosition(searchButton)}
+{#if activePopover === 'view'}
+	{@const popoverPosition = getPopoverPosition(viewButton)}
 	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<div
 		role="dialog"
-		aria-labelledby="searchButton"
+		aria-labelledby="viewMenu"
 		class="popover"
 		style="top: {popoverPosition.bottom}px; left: {popoverPosition.left}px;"
 	>
-		<div role="menu" aria-label="Edit menu" tabindex="0">
-			<p>Search Menu</p>
+		<div role="menu" aria-label="View menu" tabindex="0">
+			<p>View Menu</p>
+		</div>
+	</div>
+{/if}
+{#if activePopover === 'go'}
+	{@const popoverPosition = getPopoverPosition(goButton)}
+	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<div
+		role="dialog"
+		aria-labelledby="goMenu"
+		class="popover"
+		style="top: {popoverPosition.bottom}px; left: {popoverPosition.left}px;"
+	>
+		<div role="menu" aria-label="Go menu" tabindex="0">
+			<p>Go Menu</p>
+		</div>
+	</div>
+{/if}
+{#if activePopover === 'favorites'}
+	{@const popoverPosition = getPopoverPosition(favoritesButton)}
+	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<div
+		role="dialog"
+		aria-labelledby="favoritesMenu"
+		class="popover"
+		style="top: {popoverPosition.bottom}px; left: {popoverPosition.left}px;"
+	>
+		<div role="menu" aria-label="Favorites menu" tabindex="0">
+			<p>Favorites Menu</p>
+		</div>
+	</div>
+{/if}
+{#if activePopover === 'tools'}
+	{@const popoverPosition = getPopoverPosition(toolsButton)}
+	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<div
+		role="dialog"
+		aria-labelledby="toolButton"
+		class="popover"
+		style="top: {popoverPosition.bottom}px; left: {popoverPosition.left}px;"
+	>
+		<div role="menu" aria-label="Tool menu" tabindex="0">
+			<p>Tool Menu</p>
 		</div>
 	</div>
 {/if}

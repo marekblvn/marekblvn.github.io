@@ -59,7 +59,6 @@
 	function handleMaximizedResize() {
 		if (maximized) {
 			dimensions = { width: window.innerWidth + 6, height: window.innerHeight - 24 };
-			console.log('changed dimensions to ', dimensions);
 		}
 	}
 
