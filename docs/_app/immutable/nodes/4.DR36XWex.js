@@ -1,1 +1,0 @@
-import"../chunks/Bg9kRutz.js";import"../chunks/69_IOA4Y.js";import{T as t}from"../chunks/BsvD8_K-.js";import{W as r}from"../chunks/7UkXtimT.js";function n(o){r(o,{title:"About",icon:"computer",toolbar:t})}export{n as component};
