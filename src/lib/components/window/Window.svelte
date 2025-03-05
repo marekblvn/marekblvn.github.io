@@ -5,6 +5,7 @@
 	import { activeTabCache } from '$lib/stores/active-tab';
 	import { goto } from '$app/navigation';
 	import { tabCache } from '$lib/stores/tabs';
+	import { page } from '$app/stores';
 
 	interface Props {
 		children?: Snippet;
@@ -58,7 +59,6 @@
 	function handleMaximizedResize() {
 		if (maximized) {
 			dimensions = { width: window.innerWidth + 6, height: window.innerHeight - 24 };
-			console.log('changed dimensions to ', dimensions);
 		}
 	}
 
@@ -79,7 +79,7 @@
 
 	function closeWindow() {
 		onCloseWindow();
-		tabCache.update((cache) => cache.filter((tab) => tab.title !== title));
+		tabCache.update((cache) => cache.filter((tab) => !title.includes(tab.title)));
 		goto('/');
 	}
 
@@ -366,5 +366,7 @@
 		border-width: 1px;
 		border-style: solid;
 		border-color: #808080 #dbdbdb #dbdbdb #808080;
+		background-color: #ffffff;
+		overflow: scroll;
 	}
 </style>
