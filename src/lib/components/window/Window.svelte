@@ -21,16 +21,16 @@
 		onCloseWindow = () => {}
 	}: Props = $props();
 
-	let pos = $state({ top: 120, left: 200 });
+	let pos = $state({ top: 120, left: 80 });
 	let maximized = $state(false);
 	let isResizing = $state(false);
 	let isDragging = $state(false);
-	let dimensions = $state({ width: 900, height: 600 });
-	let savedDimensions = $state({ width: 300, height: 300 });
+	let dimensions = $state({ width: 600, height: 500 });
+	let savedDimensions = $state({ width: 600, height: 500 });
 	let initialMouseX = $state(0);
 	let initialMouseY = $state(0);
-	let initialWidth = $state(dimensions.width);
-	let initialHeight = $state(dimensions.height);
+	let initialWidth = $state(600);
+	let initialHeight = $state(500);
 	let initialLeft = $state(pos.left);
 	let initialTop = $state(pos.top);
 	let resizeDirection = $state('');

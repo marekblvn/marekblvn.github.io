@@ -22,7 +22,7 @@
 		{ route: '/about', label: 'About', icon: computerIcon },
 		undefined,
 		undefined,
-		{ route: '/projects', label: 'My Projects' },
+		{ route: '/projects', label: 'Projects' },
 		undefined,
 		{ route: '/game-of-life', label: 'Game of Life', icon: executableIcon },
 		{ route: '/langtons-ant', label: "Langton's Ant", icon: executableIcon }
