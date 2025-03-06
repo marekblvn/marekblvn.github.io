@@ -11,7 +11,19 @@
 	import computerIcon from '$lib/static/icons/computer.ico';
 	import executableIcon from '$lib/static/icons/executable.ico';
 
+	interface Route {
+		route: string;
+		label?: string;
+		icon?: string;
+	}
+
 	let { children } = $props();
+	const shortcuts: Array<Route> = $state([
+		{ route: '/about', label: 'About', icon: computerIcon },
+		{ route: '/projects', label: 'My Projects' },
+		{ route: '/game-of-life', label: 'Game of Life', icon: executableIcon },
+		{ route: '/langtons-ant', label: "Langton's Ant", icon: executableIcon }
+	]);
 	onMount(() => {
 		$effect(() => {
 			page.subscribe((value) => {
@@ -21,6 +33,10 @@
 			});
 		});
 	});
+	function moveShortcut(from: number, to: number) {
+		const movedItem = shortcuts.splice(from, 1)[0];
+		shortcuts.splice(to, 0, movedItem);
+	}
 </script>
 
 <div class="main">
@@ -31,10 +47,9 @@
 		</div>
 		<!-- {/if} -->
 		<div class="desktop">
-			<RouteShortcut icon={computerIcon} label="About" route="/about" />
-			<RouteShortcut route="/projects" label="Projects" />
-			<RouteShortcut route="/game-of-life" label="Game of Life" icon={executableIcon} />
-			<RouteShortcut route="/langtons-ant" label="Langton's Ant" icon={executableIcon} />
+			{#each shortcuts as shortcut, index}
+				<RouteShortcut {...shortcut} {index} onMove={moveShortcut} />
+			{/each}
 		</div>
 	</div>
 	<div class="bottom-panel">
@@ -84,10 +99,10 @@
 		width: 100%;
 		height: 100%;
 		display: grid;
-		row-gap: 0;
-		column-gap: 0;
 		grid-template-columns: repeat(auto-fill, 75px);
 		grid-template-rows: repeat(auto-fill, 75px);
+		gap: 5px;
+		grid-auto-flow: column;
 		overflow-x: scroll;
 		scroll-behavior: smooth;
 	}
