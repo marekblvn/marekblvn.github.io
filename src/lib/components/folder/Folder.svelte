@@ -1,9 +1,10 @@
 <script lang="ts">
-	let { label, icon, onClick } = $props();
+	import defaultIcon from '$lib/static/icons/directory_closed.ico';
+	let { label, icon = defaultIcon, onClick } = $props();
 </script>
 
 <div class="rect" ondblclick={onClick}>
-	<img src={`/src/lib/static/icons/${icon}.ico`} alt="" class="icon" />
+	<img src={icon} alt="" class="icon" />
 	<div class="label-div">
 		{label}
 	</div>

@@ -4,6 +4,7 @@
 	import { activeTabCache } from '$lib/stores/active-tab';
 	import { goto } from '$app/navigation';
 	import { tabCache } from '$lib/stores/tabs';
+	import defaultIcon from '$lib/static/icons/directory_closed.ico';
 
 	interface Props {
 		children?: Snippet;
@@ -14,7 +15,7 @@
 	}
 	let {
 		children,
-		icon = 'directory_open',
+		icon = defaultIcon,
 		title = 'Untitled',
 		toolbar,
 		onCloseWindow = () => {}
@@ -186,7 +187,7 @@
 		<div class="window">
 			<div class="top-bar" on:mousedown={startDrag}>
 				<div class="title">
-					<img src={`/src/lib/static/icons/${icon}.ico`} alt="" class="icon" />
+					<img src={icon} alt="" class="icon" />
 					<div class="label">{title}</div>
 				</div>
 				<WindowButton

@@ -1,7 +1,9 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import Folder from '$lib/components/folder/Folder.svelte';
-	import { onMount } from 'svelte';
+	import folderIcon from '$lib/static/icons/directory_closed.ico';
+
 	let repositories: Array<any> = $state([]);
 	onMount(async () => {
 		await loadRepositories();
@@ -19,13 +21,11 @@
 	}
 </script>
 
-<!-- TODO: Create a Toolbar with back button -->
-
 <div class="grid">
 	{#each repositories as repo}
 		<Folder
 			label={repo.name}
-			icon={'directory_closed'}
+			icon={folderIcon}
 			onClick={() => handleDoubleClickFolder(repo.name)}
 		/>
 	{/each}

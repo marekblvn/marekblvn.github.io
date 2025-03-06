@@ -1,21 +1,21 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { activeTabCache } from '$lib/stores/active-tab';
-	import { iconCache } from '$lib/stores/icons';
 	import { tabCache } from '$lib/stores/tabs';
 	import { onMount } from 'svelte';
+	import defaultIcon from '$lib/static/icons/directory_closed.ico';
 
 	interface Props {
 		title: string;
 		icon: string;
 		isActive?: boolean;
 	}
-	let { icon, title, isActive = false }: Props = $props();
+	let { icon = defaultIcon, title, isActive = false }: Props = $props();
 	onMount(() => {
 		$effect(() => {
 			tabCache.subscribe((cache) => {
 				const tab = cache.find((tab) => tab.title === title);
-				icon = tab?.icon || 'directory_open';
+				icon = tab?.icon || defaultIcon;
 			});
 		});
 	});
@@ -27,7 +27,7 @@
 </script>
 
 <button class="tab" class:active={isActive} onclick={onClick}>
-	<img src={`/src/lib/static/icons/${icon}.ico`} alt="" />
+	<img src={icon} alt="" />
 	<div class="tab-title">{title}</div>
 </button>
 

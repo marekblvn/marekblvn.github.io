@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import ExtendedToolbar from '$lib/components/extended-toolbar/ExtendedToolbar.svelte';
+	import windowIcon from '$lib/static/icons/directory_open.ico';
 	let { children } = $props();
 	let label = $state('');
 	onMount(() => {
@@ -17,6 +18,6 @@
 	});
 </script>
 
-<Window title={label} toolbar={ExtendedToolbar}>
+<Window title={label} icon={windowIcon} toolbar={ExtendedToolbar}>
 	{@render children()}
 </Window>

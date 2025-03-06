@@ -2,19 +2,21 @@
 	import { goto } from '$app/navigation';
 	import { activeTabCache } from '$lib/stores/active-tab';
 	import { tabCache } from '$lib/stores/tabs';
+	import defaultIcon from '$lib/static/icons/directory_closed.ico';
 	interface Props {
 		label?: string;
 		icon?: string;
 		route: string;
 		onClick?: () => void;
 	}
-	let { icon = 'directory_closed', label = 'Unnamed', route, onClick = () => {} }: Props = $props();
+	let { icon = defaultIcon, label = 'Unnamed', route, onClick = () => {} }: Props = $props();
 
 	function handleDoubleClick() {
 		tabCache.update((cache) => {
 			if (!cache.some((tab) => tab.title === label)) {
 				return [...cache, { title: label, icon }];
 			}
+
 			return cache;
 		});
 		activeTabCache.set(label);
@@ -33,7 +35,7 @@
 	ondblclick={handleDoubleClick}
 >
 	<div class="rect">
-		<img src={`/src/lib/static/icons/${icon}.ico`} alt="icon" class="icon" />
+		<img src={icon} alt="icon" class="icon" />
 		<div class="label-div">
 			{label}
 		</div>

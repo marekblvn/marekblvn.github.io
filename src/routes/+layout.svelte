@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import '$lib/static/fonts.css';
 	import PanelSettings from '$lib/components/panel-settings/PanelSettings.svelte';
@@ -7,7 +8,9 @@
 	import SimpleDivider from '$lib/components/simple-divider/SimpleDivider.svelte';
 	import StartButton from '$lib/components/start-button/StartButton.svelte';
 	import { activeTabCache } from '$lib/stores/active-tab';
-	import { onMount } from 'svelte';
+	import computerIcon from '$lib/static/icons/computer.ico';
+	import executableIcon from '$lib/static/icons/executable.ico';
+
 	let { children } = $props();
 	onMount(() => {
 		$effect(() => {
@@ -28,10 +31,10 @@
 		</div>
 		<!-- {/if} -->
 		<div class="desktop">
-			<RouteShortcut icon="computer" label="About" route="/about" />
+			<RouteShortcut icon={computerIcon} label="About" route="/about" />
 			<RouteShortcut route="/projects" label="Projects" />
-			<RouteShortcut route="/game-of-life" label="Game of Life" icon="executable" />
-			<RouteShortcut route="/langtons-ant" label="Langton's Ant" icon="executable" />
+			<RouteShortcut route="/game-of-life" label="Game of Life" icon={executableIcon} />
+			<RouteShortcut route="/langtons-ant" label="Langton's Ant" icon={executableIcon} />
 		</div>
 	</div>
 	<div class="bottom-panel">
