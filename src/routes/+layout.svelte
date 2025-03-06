@@ -37,10 +37,7 @@
 		});
 		const widthCount = Math.floor((window.innerWidth - 20) / 75);
 		const heightCount = Math.floor((window.innerHeight - 30) / 75);
-		console.log('width count:', widthCount);
-		console.log('height count:', heightCount);
 		const desktopCapacity = widthCount * heightCount;
-		console.log('desktop capacity:', desktopCapacity);
 		shortcuts.length = desktopCapacity;
 	});
 	function moveShortcut(from: number, to: number) {
