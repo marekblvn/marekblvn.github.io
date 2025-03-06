@@ -1,6 +1,6 @@
 <script>
 	import Time from '../time/Time.svelte';
-	import timeAndDateIcon from '$lib/assets/icons/time_and_date.ico';
+	import timeAndDateIcon from '$lib/static/icons/time_and_date.ico';
 </script>
 
 <div class="rect">

@@ -2,10 +2,10 @@
 	import { page } from '$app/stores';
 	import { marked } from 'marked';
 	import { onMount } from 'svelte';
+	import searchWebIcon from '$lib/static/icons/search_web.ico';
 	let { name } = $page.params;
 	let readmeContent: string = $state('');
 	const repoUrl = `https://github.com/marekblvn/${name}`;
-	const iconAsset = '/src/lib/assets/icons/search_web.ico';
 
 	onMount(async () => {
 		await fetchReadme();
@@ -23,7 +23,7 @@
 	<button>
 		<div>
 			<a href={repoUrl} target="_blank">
-				<img src={iconAsset} alt="" />
+				<img src={searchWebIcon} alt="" />
 				<span>Visit project page</span>
 			</a>
 		</div>

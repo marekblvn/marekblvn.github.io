@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { onMount, type Component, type Snippet } from 'svelte';
-	import { iconCache } from '$lib/stores/icons';
-	import WindowButton from '../window-button/WindowButton.svelte';
+	import WindowButton from '../window-buttons/WindowButtons.svelte';
 	import { activeTabCache } from '$lib/stores/active-tab';
 	import { goto } from '$app/navigation';
 	import { tabCache } from '$lib/stores/tabs';
-	import { page } from '$app/stores';
+	import defaultIcon from '$lib/static/icons/directory_closed.ico';
 
 	interface Props {
 		children?: Snippet;
@@ -16,13 +15,12 @@
 	}
 	let {
 		children,
-		icon = 'directory_open',
+		icon = defaultIcon,
 		title = 'Untitled',
 		toolbar,
 		onCloseWindow = () => {}
 	}: Props = $props();
 
-	let iconAsset = $state('');
 	let pos = $state({ top: 120, left: 200 });
 	let maximized = $state(false);
 	let isResizing = $state(false);
@@ -40,16 +38,6 @@
 	const MIN_HEIGHT = 300;
 
 	onMount(() => {
-		iconCache.update((cache) => {
-			if (cache[icon]) {
-				iconAsset = cache[icon];
-			} else {
-				const uri = `/src/lib/assets/icons/${icon}.ico`;
-				cache[icon] = uri;
-				iconAsset = uri;
-			}
-			return cache;
-		});
 		window.addEventListener('resize', handleMaximizedResize);
 		return () => {
 			window.removeEventListener('resize', handleMaximizedResize);
@@ -199,14 +187,14 @@
 		<div class="window">
 			<div class="top-bar" on:mousedown={startDrag}>
 				<div class="title">
-					<img src={iconAsset} alt="" class="icon" />
+					<img src={icon} alt="" class="icon" />
 					<div class="label">{title}</div>
 				</div>
-				<div class="window-buttons">
-					<WindowButton icon="minimize" onclick={minimizeWindow} />
-					<WindowButton icon="maximize" onclick={toggleMaximized} />
-					<WindowButton style="margin-left: 2px;" icon="close" onclick={closeWindow} />
-				</div>
+				<WindowButton
+					onMinimize={minimizeWindow}
+					onMaximize={toggleMaximized}
+					onClose={closeWindow}
+				/>
 			</div>
 			<div class="content">
 				{#if toolbar != null}

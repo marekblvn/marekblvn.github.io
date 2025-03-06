@@ -1,5 +1,5 @@
 <script lang="ts">
-	import windowsLogo from '$lib/assets/icons/windows.ico';
+	import windowsLogo from '$lib/static/icons/windows.ico';
 	let showPopover = $state(false);
 	function handleKeyDown(event: KeyboardEvent) {
 		if (event.key === 'Escape') {
