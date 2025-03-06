@@ -1,0 +1,1 @@
+import"./Bg9kRutz.js";import{ab as o}from"./l7GjtcrW.js";import{a as p,t as s}from"./DypfSJrO.js";import{s as v}from"./DsQOLr7C.js";import{p as e}from"./CWsXgm7K.js";var d=s('<div class="divider svelte-1985x1c"></div>');function c(r,t){let a=e(t,"height",3,"100%"),m=e(t,"margin",3,"0");var i=d();o(()=>v(i,"style",`height: ${a()??""}; margin: ${m()??""}`)),p(r,i)}export{c as S};

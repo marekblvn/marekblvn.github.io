@@ -1,0 +1,1 @@
+import{b as o,E as i,c as f,al as p,w as h,h as b,d,as as e}from"./l7GjtcrW.js";function v(n,r,...c){var t=n,s=p,a;o(()=>{s!==(s=r())&&(a&&(h(a),a=null),a=f(()=>s(t,...c)))},i),b&&(t=d)}const E=e("/"),T=e([]);export{E as a,v as s,T as t};

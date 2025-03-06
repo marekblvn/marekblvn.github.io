@@ -1,0 +1,1 @@
+import"../chunks/Bg9kRutz.js";import"../chunks/69_IOA4Y.js";import{T as t}from"../chunks/DO_HtU5B.js";import{W as r}from"../chunks/C1die6gb.js";import{w as i}from"../chunks/8E7N2lVu.js";function e(o){r(o,{title:"About",icon:i,toolbar:t})}export{e as component};
