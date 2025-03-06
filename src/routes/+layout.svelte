@@ -8,7 +8,7 @@
 	import SimpleDivider from '$lib/components/simple-divider/SimpleDivider.svelte';
 	import StartButton from '$lib/components/start-button/StartButton.svelte';
 	import { activeTabCache } from '$lib/stores/active-tab';
-	import computerIcon from '$lib/static/icons/computer.ico';
+	import userDocIcon from '$lib/static/icons/user-documents.ico';
 	import executableIcon from '$lib/static/icons/executable.ico';
 
 	interface Route {
@@ -19,7 +19,7 @@
 
 	let { children } = $props();
 	let shortcuts: Array<Route | undefined> = $state([
-		{ route: '/about', label: 'About', icon: computerIcon },
+		{ route: '/about-me', label: 'About Me', icon: userDocIcon },
 		undefined,
 		undefined,
 		{ route: '/projects', label: 'Projects' },
