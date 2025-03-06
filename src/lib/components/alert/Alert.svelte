@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import closeIcon from '$lib/static/icons/close.ico';
 	import closeIconDisabled from '$lib/static/icons/close-disabled.ico';
 	import infoIcon from '$lib/static/icons/info.ico';
 	import errorIcon from '$lib/static/icons/error.ico';
 	import warningIcon from '$lib/static/icons/Warning.ico';
-	import { onMount } from 'svelte';
+	import errorSound from '$lib/static/audio/error.mp3';
 	interface Props {
 		open?: boolean;
 		header?: string;
@@ -35,7 +36,18 @@
 			default:
 				icon = errorIcon;
 		}
+		$effect(() => {
+			if (open) {
+				playSound();
+			}
+		});
 	});
+	async function playSound() {
+		if (type !== 'info') {
+			const sound = new Audio(errorSound);
+			await sound.play();
+		}
+	}
 	async function handleClickOk(event: MouseEvent) {
 		try {
 			await onClickOk(event);
