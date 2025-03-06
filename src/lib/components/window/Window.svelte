@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, type Component, type Snippet } from 'svelte';
-	import WindowButton from '../window-button/WindowButton.svelte';
+	import WindowButton from '../window-buttons/WindowButtons.svelte';
 	import { activeTabCache } from '$lib/stores/active-tab';
 	import { goto } from '$app/navigation';
 	import { tabCache } from '$lib/stores/tabs';
@@ -189,11 +189,11 @@
 					<img src={`/src/lib/static/icons/${icon}.ico`} alt="" class="icon" />
 					<div class="label">{title}</div>
 				</div>
-				<div class="window-buttons">
-					<WindowButton icon="minimize" onclick={minimizeWindow} />
-					<WindowButton icon="maximize" onclick={toggleMaximized} />
-					<WindowButton style="margin-left: 2px;" icon="close" onclick={closeWindow} />
-				</div>
+				<WindowButton
+					onMinimize={minimizeWindow}
+					onMaximize={toggleMaximized}
+					onClose={closeWindow}
+				/>
 			</div>
 			<div class="content">
 				{#if toolbar != null}
