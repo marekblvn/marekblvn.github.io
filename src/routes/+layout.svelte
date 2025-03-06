@@ -18,9 +18,12 @@
 	}
 
 	let { children } = $props();
-	const shortcuts: Array<Route> = $state([
+	let shortcuts: Array<Route | undefined> = $state([
 		{ route: '/about', label: 'About', icon: computerIcon },
+		undefined,
+		undefined,
 		{ route: '/projects', label: 'My Projects' },
+		undefined,
 		{ route: '/game-of-life', label: 'Game of Life', icon: executableIcon },
 		{ route: '/langtons-ant', label: "Langton's Ant", icon: executableIcon }
 	]);
@@ -32,10 +35,21 @@
 				}
 			});
 		});
+		const widthCount = Math.floor((window.innerWidth - 20) / 75);
+		const heightCount = Math.floor((window.innerHeight - 30) / 75);
+		const desktopCapacity = widthCount * heightCount;
+		shortcuts.length = desktopCapacity;
 	});
 	function moveShortcut(from: number, to: number) {
 		const movedItem = shortcuts.splice(from, 1)[0];
 		shortcuts.splice(to, 0, movedItem);
+	}
+	function handleDrop(event: DragEvent, index: number) {
+		event.preventDefault();
+		const fromIndex = Number(event.dataTransfer?.getData('text/plain'));
+		if (!isNaN(fromIndex) && fromIndex !== index) {
+			moveShortcut(fromIndex, index);
+		}
 	}
 </script>
 
@@ -48,7 +62,15 @@
 		<!-- {/if} -->
 		<div class="desktop">
 			{#each shortcuts as shortcut, index}
-				<RouteShortcut {...shortcut} {index} onMove={moveShortcut} />
+				{#if shortcut}
+					<RouteShortcut {...shortcut} {index} onMove={moveShortcut} />
+				{:else}
+					<div
+						class="empty-space"
+						ondrop={(e) => handleDrop(e, index)}
+						ondragover={(e) => e.preventDefault()}
+					></div>
+				{/if}
 			{/each}
 		</div>
 	</div>
@@ -78,7 +100,7 @@
 	.main-page {
 		height: calc(100% - 28px);
 		background-color: teal;
-		padding: 16px 8px;
+		padding: 15px 10px;
 		position: relative;
 	}
 	.bottom-panel {
@@ -101,7 +123,7 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fill, 75px);
 		grid-template-rows: repeat(auto-fill, 75px);
-		gap: 5px;
+		gap: 0px;
 		grid-auto-flow: column;
 		overflow-x: scroll;
 		scroll-behavior: smooth;
@@ -111,5 +133,9 @@
 		left: 0;
 		top: 0;
 		z-index: 4500;
+	}
+	.empty-space {
+		width: 75px;
+		height: 75px;
 	}
 </style>
