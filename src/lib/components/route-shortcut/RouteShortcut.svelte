@@ -7,9 +7,10 @@
 		label?: string;
 		icon?: string;
 		route: string;
-		onClick?: () => void;
+		index: number;
+		onMove: (from: number, to: number) => void;
 	}
-	let { icon = defaultIcon, label = 'Unnamed', route, onClick = () => {} }: Props = $props();
+	let { icon = defaultIcon, label = 'Unnamed', route, index, onMove }: Props = $props();
 
 	function handleDoubleClick() {
 		tabCache.update((cache) => {
@@ -22,6 +23,18 @@
 		activeTabCache.set(label);
 		goto(route);
 	}
+
+	function handleDragStart(event: DragEvent) {
+		event.dataTransfer?.setData('text/plain', index.toString());
+	}
+
+	function handleDrop(event: DragEvent) {
+		event.preventDefault();
+		const fromIndex = Number(event.dataTransfer?.getData('text/plain'));
+		if (!isNaN(fromIndex) && fromIndex !== index) {
+			onMove(fromIndex, index);
+		}
+	}
 </script>
 
 <a
@@ -33,6 +46,9 @@
 		return false;
 	}}
 	ondblclick={handleDoubleClick}
+	ondragstart={handleDragStart}
+	ondragover={(e) => e.preventDefault()}
+	ondrop={handleDrop}
 >
 	<div class="rect">
 		<img src={icon} alt="icon" class="icon" />
@@ -64,9 +80,13 @@
 		row-gap: 4px;
 		text-align: center;
 	}
+	.rect:active {
+		cursor: grabbing;
+	}
 	.icon {
 		width: 32px;
 		height: 32px;
+		image-rendering: pixelated;
 	}
 	.label-div {
 		width: 71px;
