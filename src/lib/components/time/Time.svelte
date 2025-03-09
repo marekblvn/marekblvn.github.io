@@ -29,7 +29,5 @@
 		height: 21px;
 		display: flex;
 		align-items: center;
-		margin-left: 12px;
-		margin-right: 12px;
 	}
 </style>
