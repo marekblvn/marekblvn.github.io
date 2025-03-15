@@ -1,0 +1,30 @@
+@font-face {
+  font-family: "MS Sans Serif";
+  src: url("./assets/fonts/MS_Sans_Serif.ttf");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "MS Sans Serif";
+  src: url("./assets/fonts/MS_Sans_Serif_Bold.ttf");
+  font-weight: bold;
+}
+
+:root {
+  font-family: "MS Sans Serif", sans-serif;
+  --background-color: teal;
+  --base-color: #bfbfbf;
+  --outer-border-colors: #ffffff #000000 #000000 #ffffff;
+  --inner-border-color: #dbdbdb #808080 #808080 #dbdbdb;
+  --outer-border-colors-inverted: #000000 #ffffff #ffffff #000000;
+  --inner-border-colors-inverted: #808080 #dbdbdb #dbdbdb #808080;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background-color: var(--background-color);
+}
