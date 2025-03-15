@@ -11,7 +11,7 @@
 
 :root {
   font-family: "MS Sans Serif", sans-serif;
-  --background-color: teal;
+  --background-color: #008080;
   --base-color: #bfbfbf;
   --outer-border-colors: #ffffff #000000 #000000 #ffffff;
   --inner-border-color: #dbdbdb #808080 #808080 #dbdbdb;
