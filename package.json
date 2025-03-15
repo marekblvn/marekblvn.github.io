@@ -1,7 +1,8 @@
 {
   "name": "marekblvn.github.io",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "homepage": "https://marekblvn.github.io",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,7 +10,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist -b production"
   },
   "dependencies": {
     "react": "^19.0.0",
@@ -32,6 +35,7 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "eslint-plugin-storybook": "^0.11.4",
+    "gh-pages": "^6.3.0",
     "globals": "^15.15.0",
     "storybook": "^8.6.6",
     "typescript": "~5.7.2",
