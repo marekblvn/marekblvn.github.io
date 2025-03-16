@@ -5,7 +5,7 @@ import folderIcon from "../../assets/icons/folder.png";
 
 const meta: Meta<typeof Button> = {
   component: Button,
-  title: "Button",
+  title: "Elementary Components/Controls/Button",
   tags: ["autodocs"],
   excludeStories: /.*Data$/,
   args: {

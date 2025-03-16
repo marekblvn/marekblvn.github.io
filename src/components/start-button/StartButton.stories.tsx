@@ -3,7 +3,7 @@ import StartButton from "./StartButton";
 
 const meta: Meta<typeof StartButton> = {
   component: StartButton,
-  title: "Start Button",
+  title: "Elementary Components/Controls/Start Button",
   tags: ["autodocs"],
   excludeStories: /.*Data$/,
   parameters: {

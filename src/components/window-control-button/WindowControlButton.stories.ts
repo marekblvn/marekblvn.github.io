@@ -3,7 +3,7 @@ import WindowControlButton from "./WindowControlButton";
 
 const meta: Meta<typeof WindowControlButton> = {
   component: WindowControlButton,
-  title: "Window Control Button",
+  title: "Elementary Components/Controls/Window Control Button",
   tags: ["autodocs"],
   excludeStories: /.*Data$/,
   args: {

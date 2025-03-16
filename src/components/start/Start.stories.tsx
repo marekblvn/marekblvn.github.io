@@ -3,7 +3,7 @@ import Start from "./Start";
 
 const meta: Meta<typeof Start> = {
   component: Start,
-  title: "Start",
+  title: "Composite Components/Navigation/Start",
   tags: ["autodocs"],
   excludeStories: /.*Data$/,
   parameters: {
