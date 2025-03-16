@@ -2,19 +2,49 @@ import { useState, useRef, useEffect } from "react";
 import StartButton from "../start-button/StartButton";
 import styled from "styled-components";
 
-const StartMenu = styled.div`
+const StartMenuDiv = styled.div`
   position: absolute;
   left: 0;
   bottom: 24px;
   width: 205px;
-  height: 340px;
-  background-color: #bfbfbf;
+  height: 336px;
   border-width: 1px;
   border-style: solid;
   border-color: #fff #000 #000 #fff;
   display: grid;
+  transform-origin: bottom;
+  transform: scaleY(0);
+  animation: grow 150ms ease-in-out forwards;
+  @keyframes grow {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
 `;
 
+const StartMenuDivInner = styled.div`
+  border-width: 1px;
+  border-style: solid;
+  border-color: #dbdbdb #808080 #808080 #dbdbdb;
+  display: grid;
+  grid-template-columns: 21px auto;
+  background-color: #bfbfbf;
+`;
+
+const StartMenuSideText = styled.div`
+  background-color: #000080;
+  writing-mode: sideways-lr;
+  user-select: none;
+  color: #ffffff;
+  padding-bottom: 4px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  column-gap: 4px;
+`;
 function Start() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const startMenuRef = useRef<HTMLDivElement>(null);
@@ -44,15 +74,14 @@ function Start() {
     >
       <StartButton onClick={toggleMenu} active={isOpen} />
       {isOpen && (
-        <StartMenu>
-          <div
-            style={{
-              borderWidth: "1px",
-              borderStyle: "solid",
-              borderColor: "#dbdbdb #808080 #808080 #dbdbdb",
-            }}
-          ></div>
-        </StartMenu>
+        <StartMenuDiv>
+          <StartMenuDivInner>
+            <StartMenuSideText>
+              Marek
+              <span style={{ fontWeight: "normal" }}>Balvín</span>
+            </StartMenuSideText>
+          </StartMenuDivInner>
+        </StartMenuDiv>
       )}
     </div>
   );
