@@ -9,12 +9,13 @@ const spriteOffsets = {
   help: "-48px",
 } as const;
 
-type IconCode = keyof typeof spriteOffsets;
+export type IconCode = keyof typeof spriteOffsets;
 
 interface WindowControlButtonProps {
-  readonly icon: IconCode;
-  readonly onClick: MouseEventHandler;
-  readonly disabled: boolean;
+  readonly icon?: IconCode;
+  readonly onClick?: MouseEventHandler;
+  readonly disabled?: boolean;
+  readonly margin?: string;
 }
 
 const IconDiv = styled.div<{ x: string }>`
@@ -31,13 +32,14 @@ const IconDiv = styled.div<{ x: string }>`
   user-select: none;
 `;
 
-const IconBtn = styled.button`
+const IconBtn = styled.button<{ $margin: string }>`
   border-width: 1px;
   border-style: solid;
   border-color: #fff #000 #000 #fff;
   width: 16px;
   height: 14px;
   padding: 0;
+  margin: ${({ $margin }) => $margin};
   background-color: #bfbfbf;
   &:active:not(:disabled) {
     border-color: #000 #fff #fff #000;
@@ -54,10 +56,11 @@ function WindowControlButton({
   icon = "close",
   onClick = () => {},
   disabled = false,
+  margin = "0px",
 }: WindowControlButtonProps) {
   const iconOffset: string = spriteOffsets[icon] || "0px";
   return (
-    <IconBtn onClick={onClick} disabled={disabled}>
+    <IconBtn onClick={onClick} disabled={disabled} $margin={margin}>
       <IconDiv x={iconOffset} />
     </IconBtn>
   );
