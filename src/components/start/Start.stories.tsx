@@ -10,9 +10,38 @@ const meta: Meta<typeof Start> = {
     backgrounds: { default: "desktop" },
     layout: "centered",
   },
+  render: () => {
+    return (
+      <div
+        style={{
+          position: "fixed",
+          left: "32px",
+          bottom: "32px",
+          height: "500px",
+        }}
+      >
+        <Start />
+      </div>
+    );
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: {},
+  render: () => {
+    return (
+      <div
+        style={{
+          position: "fixed",
+          left: "32px",
+          bottom: "32px",
+        }}
+      >
+        <Start />
+      </div>
+    );
+  },
+};
