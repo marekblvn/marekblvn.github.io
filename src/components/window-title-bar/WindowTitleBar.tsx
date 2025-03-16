@@ -3,6 +3,7 @@ import WindowControlButton, {
   IconCode,
 } from "../window-control-button/WindowControlButton";
 import { ReactNode } from "react";
+import useIcon from "../../hooks/useIcon";
 
 interface WindowTitleBarProps {
   readonly title?: string;
@@ -10,6 +11,7 @@ interface WindowTitleBarProps {
     | [IconCode, IconCode, IconCode]
     | [IconCode, IconCode]
     | [IconCode];
+  readonly icon?: string;
 }
 
 const TitleBar = styled.div<{ $controlsWidth: number }>`
@@ -24,7 +26,8 @@ const TitleBar = styled.div<{ $controlsWidth: number }>`
 `;
 
 const Title = styled.div`
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
 `;
 
 const TitleLabel = styled.span`
@@ -34,7 +37,11 @@ const TitleLabel = styled.span`
   padding-left: 4px;
 `;
 
-const Icon = styled.img``;
+const Icon = styled.img`
+  width: 16px;
+  height: 16px;
+  margin-left: 2px;
+`;
 
 const Controls = styled.div`
   display: inline-block;
@@ -43,7 +50,12 @@ const Controls = styled.div`
 function WindowTitleBar({
   title = "",
   controls = ["minimize", "maximize", "close"],
+  icon = "",
 }: WindowTitleBarProps) {
+  const iconAsset = icon
+    ? `/src/assets/icons/${icon}.png`
+    : "/src/assets/icons/empty.png";
+
   const controlsWidth: number = controls.length * 16 + 4;
   function renderControls(): Array<ReactNode> {
     return controls.map((control, index) => {
@@ -60,6 +72,7 @@ function WindowTitleBar({
   return (
     <TitleBar $controlsWidth={controlsWidth}>
       <Title>
+        {icon && <Icon src={iconAsset} alt="" />}
         <TitleLabel>{title}</TitleLabel>
       </Title>
       <Controls>{renderControls()}</Controls>
