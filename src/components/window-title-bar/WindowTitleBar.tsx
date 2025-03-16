@@ -3,7 +3,6 @@ import WindowControlButton, {
   IconCode,
 } from "../window-control-button/WindowControlButton";
 import { ReactNode } from "react";
-import useIcon from "../../hooks/useIcon";
 
 interface WindowTitleBarProps {
   readonly title?: string;

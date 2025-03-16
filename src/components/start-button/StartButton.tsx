@@ -6,12 +6,14 @@ const ControlledButton = styled.button<{ active: boolean }>`
   border-width: 1px;
   border-style: solid;
   border-color: ${({ active }) =>
-    active ? "#000 #fff #fff #000" : "#fff #000 #000 #fff"};
+    active
+      ? "var(--outer-border-colors-inverted)"
+      : "var(--outer-border-colors)"};
   padding: 0;
   background: ${({ active }) =>
     active
       ? "repeating-conic-gradient(#f0f0f0 0deg 90deg, #dbdbdb 90deg 180deg)"
-      : "#bfbfbf"};
+      : "var(--base-color)"};
   background-size: ${({ active }) => (active ? "5px 5px" : "cover")};
 `;
 
@@ -20,8 +22,8 @@ const InnerButtonDiv = styled.div<{ active: boolean }>`
   border-style: solid;
   border-color: ${(props) =>
     props.active
-      ? "#808080 #dbdbdb #dbdbdb #808080"
-      : "#dbdbdb #808080 #808080 #dbdbdb"};
+      ? "var(--inner-border-colors-inverted)"
+      : "var(--inner-border-colors)"};
   display: flex;
   align-items: center;
   padding: 2px 4px;

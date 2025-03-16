@@ -10,7 +10,7 @@ const StartMenuDiv = styled.div`
   height: 336px;
   border-width: 1px;
   border-style: solid;
-  border-color: #fff #000 #000 #fff;
+  border-color: var(--outer-border-colors);
   display: grid;
   transform-origin: bottom;
   transform: scaleY(0);
@@ -28,10 +28,10 @@ const StartMenuDiv = styled.div`
 const StartMenuDivInner = styled.div`
   border-width: 1px;
   border-style: solid;
-  border-color: #dbdbdb #808080 #808080 #dbdbdb;
+  border-color: var(--inner-border-colors);
   display: grid;
   grid-template-columns: 21px auto;
-  background-color: #bfbfbf;
+  background-color: var(--base-color);
 `;
 
 const StartMenuSideText = styled.div`
@@ -77,7 +77,7 @@ function Start() {
         <StartMenuDiv>
           <StartMenuDivInner>
             <StartMenuSideText>
-              Marek
+              <span>Marek</span>
               <span style={{ fontWeight: "normal" }}>Balvín</span>
             </StartMenuSideText>
           </StartMenuDivInner>

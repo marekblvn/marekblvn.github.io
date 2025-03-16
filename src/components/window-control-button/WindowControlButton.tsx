@@ -21,7 +21,7 @@ interface WindowControlButtonProps {
 const IconDiv = styled.div<{ x: string }>`
   border-width: 1px;
   border-style: solid;
-  border-color: #dbdbdb #808080 #808080 #dbdbdb;
+  border-color: var(--inner-border-colors);
   width: 12px;
   height: 10px;
   image-rendering: pixelated;
@@ -35,17 +35,17 @@ const IconDiv = styled.div<{ x: string }>`
 const IconBtn = styled.button<{ $margin: string }>`
   border-width: 1px;
   border-style: solid;
-  border-color: #fff #000 #000 #fff;
+  border-color: var(--outer-border-colors);
   width: 16px;
   height: 14px;
   padding: 0;
   margin: ${({ $margin }) => $margin};
-  background-color: #bfbfbf;
+  background-color: var(--base-color);
   &:active:not(:disabled) {
-    border-color: #000 #fff #fff #000;
+    border-color: var(--outer-border-colors-inverted);
   }
   &:active:not(:disabled) ${IconDiv} {
-    border-color: #808080 #dbdbdb #dbdbdb #808080;
+    border-color: var(--inner-border-colors-inverted);
   }
   &:disabled ${IconDiv} {
     background-image: url("/src/assets/sprites/window-control-icons-greyscale.png");
