@@ -14,7 +14,7 @@
   --background-color: #008080;
   --base-color: #bfbfbf;
   --outer-border-colors: #ffffff #000000 #000000 #ffffff;
-  --inner-border-color: #dbdbdb #808080 #808080 #dbdbdb;
+  --inner-border-colors: #dbdbdb #808080 #808080 #dbdbdb;
   --outer-border-colors-inverted: #000000 #ffffff #ffffff #000000;
   --inner-border-colors-inverted: #808080 #dbdbdb #dbdbdb #808080;
 }

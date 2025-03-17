@@ -15,7 +15,7 @@ interface ButtonProps {
 const InnerButtonDiv = styled.div<{ padding: string; disabled: boolean }>`
   border-width: 1px;
   border-style: solid;
-  border-color: #dbdbdb #808080 #808080 #dbdbdb;
+  border-color: var(--inner-border-colors);
   padding: ${(props) => props.padding || "2px 12px"};
   font-family: "MS Sans Serif", sans-serif;
   font-weight: normal;
@@ -36,18 +36,18 @@ const StyledButton = styled.button<{ width: string; height: string }>`
   padding: 0;
   border-width: 1px;
   border-style: solid;
-  border-color: #ffffff #000000 #000000 #ffffff;
-  background-color: #bfbfbf;
+  border-color: var(--outer-border-colors);
+  background-color: var(--base-color);
   width: ${(props) => props.width || "auto"};
   height: ${(props) => props.height || "16px"};
   &:active:not(:disabled) {
-    border-color: #000000 #ffffff #ffffff #000000;
+    border-color: var(--outer-border-colors-inverted);
   }
   &:active:not(:disabled) ${InnerButtonDiv} {
-    border-color: #808080 #dbdbdb #dbdbdb #808080;
+    border-color: var(--inner-border-colors-inverted);
   }
   &:disabled ${InnerButtonDiv} {
-    color: #808080;
+    color: var(--base-color);
     text-shadow: 1px 1px #ffffff;
   }
 `;
