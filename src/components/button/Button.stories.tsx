@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "@storybook/test";
 import Button from "./Button";
-import folderIcon from "../../assets/icons/folder.png";
+import folderIcon from "../../assets/icons/16x16/folder.png";
 
 const meta: Meta<typeof Button> = {
   component: Button,

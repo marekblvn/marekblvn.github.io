@@ -1,6 +1,6 @@
 import { MouseEventHandler } from "react";
 import styled from "styled-components";
-import startIcon from "../../assets/icons/start.png";
+import startIcon from "../../assets/icons/16x16/start.png";
 
 const ControlledButton = styled.button<{ active: boolean }>`
   border-width: 1px;
