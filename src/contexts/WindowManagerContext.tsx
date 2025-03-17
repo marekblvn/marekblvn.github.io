@@ -1,13 +1,10 @@
-import { ReactElement } from "react";
+import { createContext, Dispatch } from "react";
+import {
+  WindowManagerAction,
+  WindowManagerState,
+} from "../reducers/windowManagerReducer";
 
-interface WindowData {
-  code: string;
-  title: string;
-  content: ReactElement;
-  lastPosition: { x: number; y: number };
-  minimized: boolean;
-}
-
-interface WindowManagerState {
-  openedWindow: WindowData[];
-}
+export const WindowManagerContext = createContext<
+  | { state: WindowManagerState; dispatch: Dispatch<WindowManagerAction> }
+  | undefined
+>(undefined);
