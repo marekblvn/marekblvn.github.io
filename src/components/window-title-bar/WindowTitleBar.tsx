@@ -1,16 +1,12 @@
 import styled from "styled-components";
-import WindowControlButton, {
-  IconCode,
-} from "../window-control-button/WindowControlButton";
-import { ReactNode } from "react";
+import { MouseEventHandler, ReactNode } from "react";
 
 interface WindowTitleBarProps {
   readonly title?: string;
-  readonly controls?:
-    | [IconCode, IconCode, IconCode]
-    | [IconCode, IconCode]
-    | [IconCode];
+  readonly controls?: Array<ReactNode>;
   readonly icon?: string;
+  readonly onMouseDown?: MouseEventHandler;
+  readonly onDoubleClick?: MouseEventHandler;
 }
 
 const TitleBar = styled.div<{ $controlsWidth: number }>`
@@ -43,34 +39,39 @@ const Icon = styled.img`
 `;
 
 const Controls = styled.div`
-  display: inline-block;
+  display: inline-flex;
 `;
 
 function WindowTitleBar({
   title = "",
-  controls = ["minimize", "maximize", "close"],
+  controls = [],
   icon = "",
+  onMouseDown = () => {},
+  onDoubleClick = () => {},
 }: WindowTitleBarProps) {
   const iconAsset = icon
     ? `/src/assets/icons/${icon}.png`
     : "/src/assets/icons/empty.png";
 
   const controlsWidth: number = controls.length * 16 + 4;
-  function renderControls(): Array<ReactNode> {
+  function renderControls() {
     return controls.map((control, index) => {
       return (
-        <WindowControlButton
-          margin={index === controls.length - 1 ? "0 2px" : "0px"}
+        <div
           key={index}
-          icon={control}
-        />
+          style={{
+            margin: index === controls.length - 1 ? "0 2px" : "0px",
+          }}
+        >
+          {control}
+        </div>
       );
     });
   }
 
   return (
     <TitleBar $controlsWidth={controlsWidth}>
-      <Title>
+      <Title onMouseDown={onMouseDown} onDoubleClick={onDoubleClick}>
         {icon && <Icon src={iconAsset} alt="" />}
         <TitleLabel>{title}</TitleLabel>
       </Title>
