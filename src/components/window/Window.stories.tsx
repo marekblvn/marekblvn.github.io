@@ -3,7 +3,7 @@ import Window from "./Window";
 
 const meta: Meta<typeof Window> = {
   component: Window,
-  title: "Composite Components/Window/Window",
+  title: "Composite Components/Window",
   tags: ["autodocs"],
   excludeStories: /.*Data$/,
   parameters: {
