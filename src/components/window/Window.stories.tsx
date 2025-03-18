@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import Window from "./Window";
 import BasicToolbar from "../basic-toolbar/BasicToolbar";
+import DirectoryToolbar from "../directory-toolbar/DirectoryToolbar";
 
 const meta: Meta<typeof Window> = {
   component: Window,
@@ -30,14 +31,13 @@ export const Default: Story = {
           top: 0,
           width: "100%",
           height: "100%",
-          overflow: "hidden",
         }}
       >
         <Window
           icon="folder-open"
           controls={["minimize", "maximize", "close"]}
           onClose={() => console.log("closing window")}
-          toolbars={[<BasicToolbar key={0} />, <BasicToolbar key={1} />]}
+          toolbars={[<BasicToolbar key={0} />, <DirectoryToolbar key={1} />]}
         />
       </div>
     );

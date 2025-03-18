@@ -2,6 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import WindowTools from "./WindowTools";
 import BasicToolbar from "../basic-toolbar/BasicToolbar";
 import Window from "../window/Window";
+import DirectoryToolbar from "../directory-toolbar/DirectoryToolbar";
 
 const meta: Meta<typeof WindowTools> = {
   component: WindowTools,
@@ -18,7 +19,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
-    children: [<BasicToolbar />, <BasicToolbar />],
+    children: [<BasicToolbar key={0} />, <DirectoryToolbar key={1} />],
   },
   render: (args) => {
     return <Window toolbars={args.children} />;

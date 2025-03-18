@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 import styled from "styled-components";
 
 const ToolbarDiv = styled.div`
-  height: 18px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -15,18 +14,19 @@ const ToolbarDiv = styled.div`
 
 const DragHandleDiv = styled.div`
   width: 8px;
-  height: 15px;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 2px;
+  margin-right: 1px;
+  margin-left: 1px;
 `;
 
 const DragHandleInnerDiv = styled.div`
   border-width: 1px;
   border-style: solid;
   border-color: var(--inner-border-colors);
-  height: 15px;
+  height: 90%;
   width: 2px;
   cursor: grab;
   &:active {
