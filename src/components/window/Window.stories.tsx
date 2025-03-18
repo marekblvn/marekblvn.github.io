@@ -1,9 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
 import Window from "./Window";
+import BasicToolbar from "../basic-toolbar/BasicToolbar";
 
 const meta: Meta<typeof Window> = {
   component: Window,
-  title: "Composite Components/Window",
+  title: "Composite Components/Window/Window",
   tags: ["autodocs"],
   excludeStories: /.*Data$/,
   parameters: {
@@ -36,6 +37,7 @@ export const Default: Story = {
           icon="folder-open"
           controls={["minimize", "maximize", "close"]}
           onClose={() => console.log("closing window")}
+          toolbars={[<BasicToolbar key={0} />, <BasicToolbar key={1} />]}
         />
       </div>
     );
