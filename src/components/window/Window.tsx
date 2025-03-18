@@ -5,11 +5,13 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { v4 as uuidv4 } from "uuid";
 import styled, { css } from "styled-components";
 import WindowTitleBar from "../window-title-bar/WindowTitleBar";
 import WindowControlButton, {
   IconCode,
 } from "../window-control-button/WindowControlButton";
+import WindowTools from "../window-tools/WindowTools";
 
 const INITIAL_DIMENSIONS = { width: 400, height: 300 };
 const MIN_WIDTH = 400;
@@ -142,6 +144,7 @@ interface WindowProps {
   readonly controls?: Array<IconCode>;
   readonly onClose?: () => void;
   readonly onHelp?: () => void;
+  readonly toolbars?: Array<ReactNode>;
 }
 
 function Window({
@@ -151,6 +154,7 @@ function Window({
   icon = "",
   onClose = () => {},
   onHelp = () => {},
+  toolbars = [],
 }: WindowProps) {
   const [size, setSize] = useState(INITIAL_DIMENSIONS);
   const [position, setPosition] = useState({ x: 120, y: 120 });
@@ -282,11 +286,11 @@ function Window({
   }
 
   function renderControls(): Array<ReactElement> {
-    return controls.map((control, index) => {
+    return controls.map((control) => {
       const ctrl = isMaximized && control === "maximize" ? "normize" : control;
       return (
         <WindowControlButton
-          key={index}
+          key={uuidv4()}
           icon={ctrl}
           onClick={CONTROL_HANDLERS[ctrl]}
         />
@@ -327,7 +331,10 @@ function Window({
               onMouseDown={startDrag}
               onDoubleClick={() => setIsMaximized((prev) => !prev)}
             />
-            <WindowContent>{children}</WindowContent>
+            <div>
+              <WindowTools>{toolbars}</WindowTools>
+              <WindowContent>{children}</WindowContent>
+            </div>
           </WindowGrid>
         </WindowInnerFrame>
       </WindowFrame>
