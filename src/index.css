@@ -17,6 +17,7 @@
   --inner-border-colors: #dbdbdb #808080 #808080 #dbdbdb;
   --outer-border-colors-inverted: #000000 #ffffff #ffffff #000000;
   --inner-border-colors-inverted: #808080 #dbdbdb #dbdbdb #808080;
+  --blue-color: #000080;
 }
 
 html,

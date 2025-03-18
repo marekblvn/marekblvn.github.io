@@ -50,8 +50,8 @@ function WindowTitleBar({
   onDoubleClick = () => {},
 }: WindowTitleBarProps) {
   const iconAsset = icon
-    ? `/src/assets/icons/${icon}.png`
-    : "/src/assets/icons/empty.png";
+    ? `/src/assets/icons/16x16/${icon}.png`
+    : "/src/assets/icons/16x16/empty.png";
 
   const controlsWidth: number = controls.length * 16 + 4;
   function renderControls() {
