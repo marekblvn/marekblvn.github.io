@@ -18,7 +18,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     label: "Program",
-    icon: "folder",
+    icon: "doc",
     onDoubleClick: () => console.log("Click"),
   },
 };
