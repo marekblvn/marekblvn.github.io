@@ -38,6 +38,33 @@ export const Default: Story = {
           icon="folder-open"
           controls={["minimize", "maximize", "close"]}
           onClose={() => {}}
+          toolbars={[<BasicToolbar key={0} menuItems={DefaultMenu} />]}
+        />
+      </div>
+    );
+  },
+};
+
+export const MultiTools: Story = {
+  args: {
+    title: "Window",
+    icon: "folder-open",
+  },
+  render: () => {
+    return (
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        <Window
+          icon="folder-open"
+          controls={["minimize", "maximize", "close"]}
+          onClose={() => {}}
           toolbars={[
             <BasicToolbar key={0} menuItems={DefaultMenu} />,
             <DirectoryToolbar key={1} />,
