@@ -3,6 +3,7 @@ import WindowTools from "./WindowTools";
 import BasicToolbar from "../basic-toolbar/BasicToolbar";
 import Window from "../window/Window";
 import DirectoryToolbar from "../directory-toolbar/DirectoryToolbar";
+import { DefaultMenu } from "../../data/menu-data";
 
 const meta: Meta<typeof WindowTools> = {
   component: WindowTools,
@@ -19,9 +20,16 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
-    children: [<BasicToolbar key={0} />, <DirectoryToolbar key={1} />],
+    children: {},
   },
-  render: (args) => {
-    return <Window toolbars={args.children} />;
+  render: () => {
+    return (
+      <Window
+        toolbars={[
+          <BasicToolbar key={0} menuItems={DefaultMenu} />,
+          <DirectoryToolbar key={1} />,
+        ]}
+      />
+    );
   },
 };

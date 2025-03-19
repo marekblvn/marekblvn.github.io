@@ -19,6 +19,6 @@ export const Default: Story = {
   args: {
     label: "Program",
     icon: "doc",
-    onDoubleClick: () => console.log("Click"),
+    onDoubleClick: () => {},
   },
 };
