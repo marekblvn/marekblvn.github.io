@@ -6,6 +6,7 @@ const Menu = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
+  background-color: var(--base-color);
 `;
 
 const MenuItem = styled.div<{ $disabled: boolean }>`

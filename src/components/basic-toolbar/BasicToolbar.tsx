@@ -70,7 +70,7 @@ interface BasicToolbarProps {
 type PopoverType = string | null;
 type ButtonRefs = Record<string, RefObject<HTMLButtonElement>>;
 
-function BasicToolbar({ menuItems }: BasicToolbarProps) {
+function BasicToolbar({ menuItems = [] }: BasicToolbarProps) {
   const [activePopover, setActivePopover] = useState<PopoverType>(null);
 
   useEffect(() => {
