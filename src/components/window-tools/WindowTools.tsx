@@ -10,6 +10,7 @@ const WindowToolGrid = styled.div<{ $multiple: boolean }>`
   box-shadow: ${({ $multiple }) =>
     $multiple ? "0 1px 0 #fff, 0 1px 0 #fff inset" : "none"};
   grid-template-rows: repeat(auto-fill, auto);
+  grid-template-columns: 1fr;
 `;
 
 const ToolbarDivider = styled.div`
