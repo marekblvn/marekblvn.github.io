@@ -1,9 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
-import ProgramShortcut from "./ProgramShortcut";
+import ToolMenu from "./ToolMenu";
+import { DefaultFileMenu } from "../../data/menu-data";
 
-const meta: Meta<typeof ProgramShortcut> = {
-  component: ProgramShortcut,
-  title: "Elementary Components/Navigation/Program Shortcut",
+const meta: Meta<typeof ToolMenu> = {
+  component: ToolMenu,
+  title: "Elementary Components/Controls/ToolMenu",
   tags: ["autodocs"],
   excludeStories: /.*Data$/,
   parameters: {
@@ -14,11 +15,8 @@ const meta: Meta<typeof ProgramShortcut> = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
-
 export const Default: Story = {
   args: {
-    label: "Program",
-    icon: "doc",
-    onDoubleClick: () => {},
+    items: DefaultFileMenu.children,
   },
 };
