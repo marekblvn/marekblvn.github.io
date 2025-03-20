@@ -3,6 +3,7 @@ import { ReactElement } from "react";
 export interface WindowData {
   code: string;
   title: string;
+  icon: string;
   content: ReactElement;
   lastPosition: { x: number; y: number };
   minimized: boolean;
