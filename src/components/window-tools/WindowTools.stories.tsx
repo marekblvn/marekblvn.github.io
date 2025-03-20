@@ -4,6 +4,7 @@ import BasicToolbar from "../basic-toolbar/BasicToolbar";
 import Window from "../window/Window";
 import DirectoryToolbar from "../directory-toolbar/DirectoryToolbar";
 import { DefaultMenu } from "../../data/menu-data";
+import AddressToolbar from "../address-toolbar/AddressToolbar";
 
 const meta: Meta<typeof WindowTools> = {
   component: WindowTools,
@@ -28,6 +29,7 @@ export const Default: Story = {
         toolbars={[
           <BasicToolbar key={0} menuItems={DefaultMenu} />,
           <DirectoryToolbar key={1} />,
+          <AddressToolbar key={2} address="Desktop" />,
         ]}
       />
     );
