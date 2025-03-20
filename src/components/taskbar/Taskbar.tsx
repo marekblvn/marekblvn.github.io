@@ -49,9 +49,10 @@ const Tasks = styled.div`
   flex-direction: row;
   align-items: center;
   width: calc(100% - 8px);
-  height: 22px;
+  height: 24px;
   column-gap: 2px;
   padding: 0 2px;
+  overflow: hidden;
 `;
 
 function Taskbar() {
@@ -60,7 +61,10 @@ function Taskbar() {
       <BarInnerDiv>
         <Start />
         <Divider />
-        <Tasks></Tasks>
+        <Tasks>
+          {/* <Task label="Window" icon="folder" />
+          <Task label="Window" icon="folder" /> */}
+        </Tasks>
         <Divider />
         <Settings>
           <div
