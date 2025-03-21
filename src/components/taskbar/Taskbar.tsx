@@ -2,6 +2,9 @@ import styled from "styled-components";
 import Start from "../start/Start";
 import Time from "../time/Time";
 import IconButton from "../icon-button/IconButton";
+import { useWindowManager } from "../../hooks/useWindowManager";
+import Task from "../task/Task";
+import { MouseEvent } from "react";
 
 const Bar = styled.div`
   background-color: var(--base-color);
@@ -10,6 +13,7 @@ const Bar = styled.div`
   border-top-color: #dbdbdb;
   height: 30px;
   width: 100%;
+  z-index: 1000;
 `;
 
 const BarInnerDiv = styled.div`
@@ -20,9 +24,9 @@ const BarInnerDiv = styled.div`
   align-items: center;
   grid-template-rows: 100%;
   grid-template-columns: 65px 2px auto 4px 100px;
-  padding: 0 3px;
+  padding: 0 2px;
   height: 29px;
-  width: calc(100% - 6px);
+  width: calc(100% - 4px);
 `;
 
 const Divider = styled.div`
@@ -42,6 +46,7 @@ const Settings = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: #c0c0c0;
 `;
 
 const Tasks = styled.div`
@@ -56,14 +61,28 @@ const Tasks = styled.div`
 `;
 
 function Taskbar() {
+  const { state, dispatch } = useWindowManager();
+  function handleClickTask(_: MouseEvent, taskCode: string) {
+    dispatch({ type: "FOCUS_WINDOW", payload: taskCode });
+  }
   return (
     <Bar>
       <BarInnerDiv>
         <Start />
         <Divider />
         <Tasks>
-          {/* <Task label="Window" icon="folder" />
-          <Task label="Window" icon="folder" /> */}
+          {state.openedWindows.map((win) => {
+            const { title, code, icon } = win;
+            return (
+              <Task
+                key={code}
+                label={title}
+                icon={icon}
+                active={state.focusedWindowCode === code}
+                onClick={(e) => handleClickTask(e, code)}
+              />
+            );
+          })}
         </Tasks>
         <Divider />
         <Settings>
