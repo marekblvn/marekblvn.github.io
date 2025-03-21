@@ -2,40 +2,43 @@ import React, {
   MouseEventHandler,
   ReactElement,
   ReactNode,
+  useEffect,
   useRef,
   useState,
 } from "react";
 import { v4 as uuidv4 } from "uuid";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import WindowTitleBar from "../window-title-bar/WindowTitleBar";
 import WindowControlButton, {
   IconCode,
 } from "../window-control-button/WindowControlButton";
 import WindowTools from "../window-tools/WindowTools";
+import { useWindowManager } from "../../hooks/useWindowManager";
 
-const INITIAL_DIMENSIONS = { width: 400, height: 300 };
+const INITIAL_DIMENSIONS = { width: 900, height: 600 };
 const MIN_WIDTH = 400;
 const MIN_HEIGHT = 300;
 
-const Resizable = styled.div<{
+const Resizable = styled.div.attrs<{
   $width: string;
   $height: string;
   $left: number;
   $top: number;
   $isAnimating: boolean;
-}>`
-  position: relative;
+  $isFocused: boolean;
+}>((props) => ({
+  style: {
+    width: props.$width,
+    height: props.$height,
+    top: `${props.$top}px`,
+    left: `${props.$left}px`,
+    transition: props.$isAnimating ? "all 150ms ease-in-out" : "none",
+    zIndex: props.$isFocused ? 100 : 10,
+  },
+}))`
+  position: absolute;
   min-height: 300px;
   min-width: 400px;
-  width: ${({ $width }) => $width};
-  height: ${({ $height }) => $height};
-  top: ${({ $top }) => `${$top}px`};
-  left: ${({ $left }) => `${$left}px`};
-  ${({ $isAnimating }) =>
-    $isAnimating &&
-    css`
-      transition: all 150ms ease-in-out;
-    `}
 `;
 
 const ResizeHandle = styled.div`
@@ -142,9 +145,11 @@ interface WindowProps {
   readonly children?: ReactNode;
   readonly icon?: string;
   readonly controls?: Array<IconCode>;
-  readonly onClose?: () => void;
+  readonly onClose?: MouseEventHandler;
   readonly onHelp?: () => void;
   readonly toolbars?: Array<ReactNode>;
+  readonly code?: string;
+  readonly initialPosition?: { x: number; y: number };
 }
 
 function Window({
@@ -152,29 +157,55 @@ function Window({
   title = "Window",
   controls = [],
   icon = "",
+  code = "",
   onClose = () => {},
   onHelp = () => {},
   toolbars = [],
+  initialPosition = { x: 100, y: 100 },
 }: WindowProps) {
+  const { state, dispatch } = useWindowManager();
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMaximized, setIsMaximized] = useState(false);
   const [size, setSize] = useState(INITIAL_DIMENSIONS);
-  const [position, setPosition] = useState({ x: 120, y: 120 });
+  const [position, setPosition] = useState(initialPosition);
   const isResizing = useRef<null | string>(null);
   const isDragging = useRef<boolean>(false);
+  const newWidth = useRef(size.width);
+  const newHeight = useRef(size.height);
   const startX = useRef(0);
   const startY = useRef(0);
   const startWidth = useRef(0);
   const startHeight = useRef(0);
-  const newWidth = useRef(0);
-  const newHeight = useRef(0);
-  const [isMinimized, setIsMinimized] = useState(false);
-  const [isMaximized, setIsMaximized] = useState(false);
+  const windowRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (state.focusedWindowCode === code && isMinimized) {
+      setIsMinimized(false);
+    }
+  }, [state.focusedWindowCode, code, isMinimized]);
+
+  useEffect(() => {
+    function handleClickOutside(event: globalThis.MouseEvent): void {
+      if (
+        windowRef.current &&
+        !windowRef.current.contains(event.target as Node) &&
+        state.focusedWindowCode === code
+      ) {
+        dispatch({ type: "UNFOCUS_WINDOW", payload: null });
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [state.focusedWindowCode, code, dispatch]);
 
   const CONTROL_HANDLERS: Record<string, MouseEventHandler> = {
-    minimize: () => setIsMinimized(true),
+    minimize: handleMinimizeWindow,
     maximize: () => setIsMaximized(true),
     normize: () => setIsMaximized(false),
-    close: () => onClose(),
-    help: () => onHelp(),
+    close: onClose,
+    help: onHelp,
   };
 
   function startResize(
@@ -285,6 +316,17 @@ function Window({
     window.removeEventListener("mouseup", stopDrag);
   }
 
+  function regainFocus(): void {
+    if (state.focusedWindowCode !== code) {
+      dispatch({ type: "FOCUS_WINDOW", payload: code });
+    }
+  }
+
+  function handleMinimizeWindow(): void {
+    setIsMinimized(true);
+    dispatch({ type: "MINIMIZE_WINDOW", payload: code });
+  }
+
   function renderControls(): Array<ReactElement> {
     return controls.map((control) => {
       const ctrl = isMaximized && control === "maximize" ? "normize" : control;
@@ -300,14 +342,17 @@ function Window({
 
   return (
     <Resizable
+      ref={windowRef}
+      $isFocused={state.focusedWindowCode === code}
       $left={isMaximized ? 0 : position.x}
       $top={isMaximized ? 0 : position.y}
       $width={isMaximized ? "100%" : `${newWidth.current}px`}
-      $height={isMaximized ? "calc(100% - 2px)" : `${newHeight.current}px`}
+      $height={isMaximized ? "calc(100% - 33px)" : `${newHeight.current}px`}
       $isAnimating={isMaximized}
       style={{
         visibility: isMinimized ? "hidden" : "visible",
       }}
+      onClick={regainFocus}
     >
       <ResizeHandleTopLeft onMouseDown={(e) => startResize(e, "top-left")} />
       <ResizeHandleTopRight onMouseDown={(e) => startResize(e, "top-right")} />
@@ -325,6 +370,7 @@ function Window({
         <WindowInnerFrame>
           <WindowGrid>
             <WindowTitleBar
+              isFocused={state.focusedWindowCode === code}
               title={title}
               icon={icon}
               controls={renderControls()}

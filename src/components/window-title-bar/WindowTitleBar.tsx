@@ -7,29 +7,35 @@ interface WindowTitleBarProps {
   readonly icon?: string;
   readonly onMouseDown?: MouseEventHandler;
   readonly onDoubleClick?: MouseEventHandler;
+  readonly isFocused?: boolean;
 }
 
-const TitleBar = styled.div<{ $controlsWidth: number }>`
+const TitleLabel = styled.span`
+  font-weight: bold;
+  font-size: 11px;
+  padding-left: 4px;
+`;
+
+const TitleBar = styled.div<{ $controlsWidth: number; $isFocused: boolean }>`
   width: 100%;
   min-width: 120px;
   height: 18px;
-  background: linear-gradient(to right, #00007b, #1085d2);
+  background: ${({ $isFocused }) =>
+    $isFocused
+      ? "linear-gradient(to right, #00007b, #1085d2)"
+      : "linear-gradient(to right, #808080, #b5b5b5)"};
   display: grid;
   align-items: center;
   grid-template-columns: ${({ $controlsWidth }) => `auto ${$controlsWidth}px`};
   column-gap: 8px;
+  ${TitleLabel} {
+    color: ${({ $isFocused }) => ($isFocused ? "#fff" : "#c0c0c0")};
+  }
 `;
 
 const Title = styled.div`
   display: inline-flex;
   align-items: center;
-`;
-
-const TitleLabel = styled.span`
-  color: #ffffff;
-  font-weight: bold;
-  font-size: 12px;
-  padding-left: 4px;
 `;
 
 const Icon = styled.img`
@@ -48,6 +54,7 @@ function WindowTitleBar({
   icon = "",
   onMouseDown = () => {},
   onDoubleClick = () => {},
+  isFocused = true,
 }: WindowTitleBarProps) {
   const iconAsset = icon
     ? `/src/assets/icons/16x16/${icon}.png`
@@ -70,7 +77,7 @@ function WindowTitleBar({
   }
 
   return (
-    <TitleBar $controlsWidth={controlsWidth}>
+    <TitleBar $controlsWidth={controlsWidth} $isFocused={isFocused}>
       <Title onMouseDown={onMouseDown} onDoubleClick={onDoubleClick}>
         {icon && <Icon src={iconAsset} alt="" />}
         <TitleLabel>{title}</TitleLabel>
