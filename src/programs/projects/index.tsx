@@ -31,7 +31,7 @@ const View = styled.div`
 
 function Index() {
   const addressRef = useRef<string>("Projects");
-  const [currentAddress, setCurrentAddress] = useState<string>("");
+  const [currentAddress, setCurrentAddress] = useState<string>("Projects");
 
   function handleChangeAddress(_: MouseEvent, newAddress: string): void {
     addressRef.current = addressRef.current + "/" + newAddress;
@@ -53,7 +53,7 @@ function Index() {
         <AddressToolbar address={addressRef.current} />
       </WindowTools>
       <View>
-        {currentAddress === "" ? (
+        {currentAddress === "Projects" ? (
           <GithubRepoListProvider
             onData={renderProvidedData}
             onError={(err) => console.log(err)}
