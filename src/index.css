@@ -33,3 +33,52 @@ body {
 img {
   image-rendering: pixelated;
 }
+
+::-webkit-scrollbar {
+  image-rendering: pixelated;
+  background: repeating-conic-gradient(
+    #f0f0f0 0deg 90deg,
+    #dbdbdb 90deg 180deg
+  );
+  background-size: 4px 4px;
+  width: 13px;
+}
+
+::-webkit-scrollbar-button {
+  width: 13px;
+  height: 13px;
+  background-color: var(--base-color);
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0 #000 #000 #c0c0c0;
+  box-shadow: 1px 1px 0 #fff inset, -1px -1px 0 #808080 inset;
+  image-rendering: pixelated;
+  background-image: url("/src/assets/icons/arrow-down.png");
+  display: flex;
+  background-position: center;
+}
+
+::-webkit-scrollbar-button:vertical:decrement {
+  background-image: url("/src/assets/icons/arrow-up.png");
+}
+
+::-webkit-scrollbar-button:horizontal:decrement {
+  background-image: url("/src/assets/icons/arrow-left.png");
+}
+
+::-webkit-scrollbar-button:horizontal:increment {
+  background-image: url("/src/assets/icons/arrow-right.png");
+}
+
+::-webkit-scrollbar-button:active {
+  border-color: #808080;
+  box-shadow: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--base-color);
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0 #000 #000 #c0c0c0;
+  box-shadow: 1px 1px 0 #fff inset, -1px -1px 0 #808080 inset;
+}
