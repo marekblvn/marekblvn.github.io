@@ -8,6 +8,8 @@ const apiInstance = axios.create({
 type GetUserPublicReposParams = { username: string };
 export async function getUserPublicRepos({
   username,
-}: GetUserPublicReposParams): Promise<AxiosResponse<Record<string, unknown>>> {
+}: GetUserPublicReposParams): Promise<
+  AxiosResponse<Array<Record<string, unknown>>>
+> {
   return await apiInstance.get(`/users/${username}/repos`);
 }

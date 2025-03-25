@@ -1,22 +1,25 @@
 import { AxiosResponse } from "axios";
 import { useCallback, useEffect, useState } from "react";
 
-interface UseGetResult<T extends Record<string, unknown>, P extends object> {
-  data: T | undefined;
+interface UseGetResult<
+  T extends Array<Record<string, unknown>>,
+  P extends object
+> {
+  data: T | [];
   loading: boolean;
   error: string | null;
   get: (params?: P) => void;
 }
 
 export default function useGet<
-  T extends Record<string, unknown>,
+  T extends Array<Record<string, unknown>>,
   P extends object
 >(
   asyncCallback: (params: P) => Promise<AxiosResponse<T>>,
   skipInitial: boolean,
   initialParams: P
 ): UseGetResult<T, P> {
-  const [data, setData] = useState<T | undefined>();
+  const [data, setData] = useState<T | []>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [params, setParams] = useState<P | undefined>(initialParams);
@@ -44,11 +47,10 @@ export default function useGet<
   );
 
   useEffect(() => {
-    if (error) return;
     if (!skipInitial) {
       get(initialParams);
     }
-  }, [skipInitial, initialParams, error, get]);
+  }, []);
 
   return {
     data,
