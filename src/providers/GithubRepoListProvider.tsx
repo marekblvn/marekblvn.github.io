@@ -1,19 +1,19 @@
 import { ReactElement } from "react";
 import useGet from "../hooks/useGet";
-import { getUserPublicRepos } from "../services/github-api";
+import { getUserPublicRepoList } from "../services/github-api";
 
-interface GithubReposProviderProps {
+interface GithubRepoListProviderProps {
   onLoadingComponent: ReactElement | null;
   onError: (error: string) => void;
   onData: (data: Array<Record<string, any>>) => ReactElement;
 }
 
-function GithubReposProvider({
+function GithubRepoListProvider({
   onLoadingComponent,
   onError,
   onData,
-}: GithubReposProviderProps) {
-  const { data, loading, error } = useGet(getUserPublicRepos, false, {
+}: GithubRepoListProviderProps) {
+  const { data, loading, error } = useGet(getUserPublicRepoList, false, {
     username: "marekblvn",
   });
   if (loading) return onLoadingComponent;
@@ -24,4 +24,4 @@ function GithubReposProvider({
   if (data) return onData(data);
 }
 
-export default GithubReposProvider;
+export default GithubRepoListProvider;
