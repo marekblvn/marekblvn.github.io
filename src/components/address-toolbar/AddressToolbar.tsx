@@ -31,7 +31,7 @@ const Location = styled.div`
 `;
 
 const Label = styled.span`
-  font-size: 12px;
+  font-size: 11px;
   margin-left: 2px;
 `;
 
