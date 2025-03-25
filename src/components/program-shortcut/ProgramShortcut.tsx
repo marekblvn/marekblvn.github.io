@@ -14,7 +14,6 @@ const ProgramIcon = styled.img`
 
 const ProgramLabel = styled.div`
   width: 73px;
-  color: #ffffff;
   font-weight: normal;
   font-size: 11px;
   overflow: hidden;
@@ -27,7 +26,10 @@ const ProgramLabel = styled.div`
   word-break: break-word;
 `;
 
-const ProgramShortcutDiv = styled.div<{ $selected: boolean }>`
+const ProgramShortcutDiv = styled.div<{
+  $selected: boolean;
+  $labelColor: string;
+}>`
   width: 75px;
   height: 75px;
   display: grid;
@@ -47,6 +49,8 @@ const ProgramShortcutDiv = styled.div<{ $selected: boolean }>`
     background-color: ${({ $selected }) =>
       $selected ? "var(--blue-color)" : "transparent"};
     border: ${({ $selected }) => ($selected ? "dotted 1px #ffffff" : "none")};
+    color: ${({ $selected, $labelColor }) =>
+      $selected ? "#fff" : $labelColor};
   }
 `;
 
@@ -54,12 +58,14 @@ interface ProgramShortcutProps {
   label?: string;
   icon?: string;
   onDoubleClick?: MouseEventHandler;
+  color?: string;
 }
 
 const ProgramShortcut: FunctionComponent<ProgramShortcutProps> = ({
   label = "Program",
   icon = "folder",
   onDoubleClick = () => {},
+  color = "#fff",
 }) => {
   const [isSelected, setIsSelected] = useState(false);
   const iconAsset = icon
@@ -79,6 +85,7 @@ const ProgramShortcut: FunctionComponent<ProgramShortcutProps> = ({
   const outsideClickRef = useOutsideClick(handleClickOutside);
   return (
     <ProgramShortcutDiv
+      $labelColor={color}
       $selected={isSelected}
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}

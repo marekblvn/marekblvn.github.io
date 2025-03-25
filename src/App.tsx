@@ -13,7 +13,6 @@ const Page = styled.div`
   display: grid;
   grid-template-rows: auto 31px;
   height: 100%;
-  overflow: hidden;
 `;
 
 const Desktop = styled.div`

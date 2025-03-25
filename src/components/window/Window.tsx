@@ -12,7 +12,6 @@ import WindowTitleBar from "../window-title-bar/WindowTitleBar";
 import WindowControlButton, {
   IconCode,
 } from "../window-control-button/WindowControlButton";
-import WindowTools from "../window-tools/WindowTools";
 import { useWindowManager } from "../../hooks/useWindowManager";
 
 const INITIAL_DIMENSIONS = { width: 900, height: 600 };
@@ -39,6 +38,7 @@ const Resizable = styled.div.attrs<{
   position: absolute;
   min-height: 300px;
   min-width: 400px;
+  background-color: var(--base-color);
 `;
 
 const ResizeHandle = styled.div`
@@ -119,7 +119,6 @@ const WindowFrame = styled.div`
   border-width: 1px;
   border-style: solid;
   border-color: var(--outer-border-colors);
-  background-color: var(--base-color);
   height: 100%;
 `;
 
@@ -130,16 +129,6 @@ const WindowInnerFrame = styled.div`
   height: calc(100% - 2px);
 `;
 
-const WindowGrid = styled.div`
-  height: calc(100% - 1px);
-  display: grid;
-  grid-template-rows: 18px auto;
-`;
-
-const WindowContent = styled.div`
-  padding: 4px;
-`;
-
 interface WindowProps {
   readonly title?: string;
   readonly children?: ReactNode;
@@ -147,7 +136,6 @@ interface WindowProps {
   readonly controls?: Array<IconCode>;
   readonly onClose?: MouseEventHandler;
   readonly onHelp?: () => void;
-  readonly toolbars?: Array<ReactNode>;
   readonly code?: string;
   readonly initialPosition?: { x: number; y: number };
 }
@@ -160,7 +148,6 @@ function Window({
   code = "",
   onClose = () => {},
   onHelp = () => {},
-  toolbars = [],
   initialPosition = { x: 100, y: 100 },
 }: WindowProps) {
   const { state, dispatch } = useWindowManager();
@@ -368,20 +355,15 @@ function Window({
       <ResizeHandleRight onMouseDown={(e) => startResize(e, "right")} />
       <WindowFrame>
         <WindowInnerFrame>
-          <WindowGrid>
-            <WindowTitleBar
-              isFocused={state.focusedWindowCode === code}
-              title={title}
-              icon={icon}
-              controls={renderControls()}
-              onMouseDown={startDrag}
-              onDoubleClick={() => setIsMaximized((prev) => !prev)}
-            />
-            <div>
-              <WindowTools>{toolbars}</WindowTools>
-              <WindowContent>{children}</WindowContent>
-            </div>
-          </WindowGrid>
+          <WindowTitleBar
+            isFocused={state.focusedWindowCode === code}
+            title={title}
+            icon={icon}
+            controls={renderControls()}
+            onMouseDown={startDrag}
+            onDoubleClick={() => setIsMaximized((prev) => !prev)}
+          />
+          {children}
         </WindowInnerFrame>
       </WindowFrame>
     </Resizable>
