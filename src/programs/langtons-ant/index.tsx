@@ -1,7 +1,4 @@
 import styled from "styled-components";
-import BasicToolbar from "../../components/basic-toolbar/BasicToolbar";
-import { DefaultHelpMenu } from "../../data/menu-data";
-import WindowTools from "../../components/window-tools/WindowTools";
 
 const Content = styled.div`
   height: calc(100% - 18px);

@@ -5,7 +5,7 @@ import { getUserPublicRepoList } from "../services/github-api";
 interface GithubRepoListProviderProps {
   onLoadingComponent: ReactElement | null;
   onError: (error: string) => void;
-  onData: (data: Array<Record<string, any>>) => ReactElement;
+  onData: (data: Array<Record<string, any>> | undefined) => ReactElement;
 }
 
 function GithubRepoListProvider({

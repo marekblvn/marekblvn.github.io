@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import WindowTools from "./WindowTools";
 import BasicToolbar from "../basic-toolbar/BasicToolbar";
-import Window from "../window/Window";
 import DirectoryToolbar from "../directory-toolbar/DirectoryToolbar";
 import { DefaultMenu } from "../../data/menu-data";
 import AddressToolbar from "../address-toolbar/AddressToolbar";
@@ -25,13 +24,11 @@ export const Default: Story = {
   },
   render: () => {
     return (
-      <Window
-        toolbars={[
-          <BasicToolbar key={0} menuItems={DefaultMenu} />,
-          <DirectoryToolbar key={1} />,
-          <AddressToolbar key={2} address="Desktop" />,
-        ]}
-      />
+      <WindowTools>
+        <BasicToolbar menuItems={DefaultMenu} />
+        <DirectoryToolbar />
+        <AddressToolbar />
+      </WindowTools>
     );
   },
 };

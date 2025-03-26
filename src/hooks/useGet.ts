@@ -5,7 +5,7 @@ interface UseGetResult<
   T extends Array<Record<string, unknown>> | Record<string, unknown>,
   P extends object
 > {
-  data: T;
+  data: T | undefined;
   loading: boolean;
   error: string | null;
   get: (params?: P) => void;

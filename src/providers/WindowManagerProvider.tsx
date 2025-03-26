@@ -5,7 +5,10 @@ import {
 } from "../reducers/windowManagerReducer";
 import { WindowManagerContext } from "../contexts/WindowManagerContext";
 
-const initialState: WindowManagerState = { openedWindows: [] };
+const initialState: WindowManagerState = {
+  openedWindows: [],
+  focusedWindowCode: null,
+};
 
 const WindowManagerProvider: FunctionComponent<{ children: ReactNode }> = ({
   children,

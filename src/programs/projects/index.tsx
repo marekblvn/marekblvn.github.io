@@ -38,7 +38,9 @@ function Index() {
     setCurrentAddress(newAddress);
   }
 
-  function renderProvidedData(data: Array<Record<string, any>>): ReactElement {
+  function renderProvidedData(
+    data: Array<Record<string, any>> | undefined
+  ): ReactElement {
     return <Root items={data} onDoubleClickShortcut={handleChangeAddress} />;
   }
 
