@@ -1,5 +1,7 @@
 import { MouseEventHandler } from "react";
 import styled from "styled-components";
+import windowControlIcons from "../../assets/sprites/window-control-icons.png";
+import windowControlIconsGreyscale from "../../assets/sprites/window-control-icons-greyscale.png";
 
 const spriteOffsets = {
   minimize: "0px",
@@ -26,7 +28,7 @@ const IconDiv = styled.div<{ x: string }>`
   height: 10px;
   image-rendering: pixelated;
   padding: 0;
-  background-image: url("/src/assets/sprites/window-control-icons.png");
+  background-image: url(${windowControlIcons});
   background-position-x: ${(props) => (props.x ? props.x : "0px")};
   background-position-y: 0px;
   user-select: none;
@@ -48,7 +50,7 @@ const IconBtn = styled.button<{ $margin: string }>`
     border-color: var(--inner-border-colors-inverted);
   }
   &:disabled ${IconDiv} {
-    background-image: url("/src/assets/sprites/window-control-icons-greyscale.png");
+    background-image: url(${windowControlIconsGreyscale});
   }
 `;
 

@@ -1,5 +1,6 @@
 import { marked } from "marked";
 import styled from "styled-components";
+import htmlIcon from "../../assets/icons/16x16/html.png";
 
 const Content = styled.div`
   padding: 16px;
@@ -48,12 +49,7 @@ function Readme({ data = "", repoName = "" }: ReadmeProps) {
   return (
     <Content>
       <Button target="_blank" href={`https://github.com/marekblvn/${repoName}`}>
-        <img
-          src="/src/assets/icons/16x16/html.png"
-          alt=""
-          width="16px"
-          height="16px"
-        />
+        <img src={htmlIcon} alt="" width="16px" height="16px" />
         <ButtonText>Visit project page</ButtonText>
       </Button>
       <Text dangerouslySetInnerHTML={{ __html: marked(data) }} />

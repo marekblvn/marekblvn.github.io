@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import arrowDownIcon from "../../assets/svg/arrow-down.svg";
 
 const Bar = styled.div`
   display: grid;
@@ -59,6 +60,7 @@ const DropdownButtonInner = styled.div`
 `;
 
 const ArrowIcon = styled.img`
+  alt: "";
   width: 16px;
   height: 16px;
   filter: invert(70%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(70%)
@@ -79,7 +81,7 @@ function AddressToolbar({ address = "" }: AddressToolbarProps) {
           <Address>{address}</Address>
           <DropdownButton>
             <DropdownButtonInner>
-              <ArrowIcon src="/src/assets/svg/arrow-down.svg" alt="" />
+              <ArrowIcon src={arrowDownIcon} />
             </DropdownButtonInner>
           </DropdownButton>
         </Location>

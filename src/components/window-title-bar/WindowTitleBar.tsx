@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { MouseEventHandler, ReactNode } from "react";
+import { MouseEventHandler, ReactNode, useEffect, useState } from "react";
+import emptyIcon from "../../assets/icons/16x16/empty.png";
 
 interface WindowTitleBarProps {
   readonly title?: string;
@@ -56,9 +57,22 @@ function WindowTitleBar({
   onDoubleClick = () => {},
   isFocused = true,
 }: WindowTitleBarProps) {
-  const iconAsset = icon
-    ? `/src/assets/icons/16x16/${icon}.png`
-    : "/src/assets/icons/16x16/empty.png";
+  const [iconSrc, setIconSrc] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        if (icon) {
+          const res = await import(`../../assets/icons/16x16/${icon}.png`);
+          setIconSrc(res.default);
+        } else {
+          setIconSrc(emptyIcon);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchImage();
+  }, [icon]);
 
   const controlsWidth: number = controls.length * 16 + 4;
   function renderControls() {
@@ -79,7 +93,7 @@ function WindowTitleBar({
   return (
     <TitleBar $controlsWidth={controlsWidth} $isFocused={isFocused}>
       <Title onMouseDown={onMouseDown} onDoubleClick={onDoubleClick}>
-        {icon && <Icon src={iconAsset} alt="" />}
+        {icon && <Icon src={iconSrc} alt="" />}
         <TitleLabel>{title}</TitleLabel>
       </Title>
       <Controls>{renderControls()}</Controls>

@@ -2,10 +2,12 @@ import {
   FunctionComponent,
   MouseEvent,
   MouseEventHandler,
+  useEffect,
   useState,
 } from "react";
 import styled from "styled-components";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
+import emptyIcon from "../../assets/icons/32x32/empty.png";
 
 const ProgramIcon = styled.img`
   width: 32px;
@@ -68,10 +70,22 @@ const ProgramShortcut: FunctionComponent<ProgramShortcutProps> = ({
   color = "#fff",
 }) => {
   const [isSelected, setIsSelected] = useState(false);
-  const iconAsset = icon
-    ? `/src/assets/icons/32x32/${icon}.png`
-    : "/src/assets/icons/32x32/empty.png";
-
+  const [iconSrc, setIconSrc] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        if (icon) {
+          const res = await import(`../../assets/icons/32x32/${icon}.png`);
+          setIconSrc(res.default);
+        } else {
+          setIconSrc(emptyIcon);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchImage();
+  }, [icon]);
   const handleClick = () => {
     setIsSelected(true);
   };
@@ -91,7 +105,7 @@ const ProgramShortcut: FunctionComponent<ProgramShortcutProps> = ({
       onDoubleClick={handleDoubleClick}
       ref={outsideClickRef}
     >
-      <ProgramIcon src={iconAsset} alt="" />
+      <ProgramIcon src={iconSrc} alt="" />
       <ProgramLabel>{label}</ProgramLabel>
     </ProgramShortcutDiv>
   );

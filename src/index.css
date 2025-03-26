@@ -54,21 +54,21 @@ img {
   border-color: #c0c0c0 #000 #000 #c0c0c0;
   box-shadow: 1px 1px 0 #fff inset, -1px -1px 0 #808080 inset;
   image-rendering: pixelated;
-  background-image: url("/src/assets/icons/arrow-down.png");
+  background-image: url("./assets/icons/arrow-down.png");
   display: flex;
   background-position: center;
 }
 
 ::-webkit-scrollbar-button:vertical:decrement {
-  background-image: url("/src/assets/icons/arrow-up.png");
+  background-image: url("./assets/icons/arrow-up.png");
 }
 
 ::-webkit-scrollbar-button:horizontal:decrement {
-  background-image: url("/src/assets/icons/arrow-left.png");
+  background-image: url("./assets/icons/arrow-left.png");
 }
 
 ::-webkit-scrollbar-button:horizontal:increment {
-  background-image: url("/src/assets/icons/arrow-right.png");
+  background-image: url("./assets/icons/arrow-right.png");
 }
 
 ::-webkit-scrollbar-button:active {

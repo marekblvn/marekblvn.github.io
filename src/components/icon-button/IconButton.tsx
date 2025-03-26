@@ -1,4 +1,4 @@
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Button = styled.button<{ $size: "small" | "medium" }>`
@@ -25,9 +25,22 @@ function IconButton({
   size = "small",
   onClick = () => {},
 }: IconButtonProps) {
-  const iconSrc = `/src/assets/icons/${
-    size === "small" ? "16x16" : "32x32"
-  }/${icon}.png`;
+  const [iconSrc, setIconSrc] = useState(undefined);
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const res = await import(
+          `../../assets/icons/${
+            size === "small" ? "16x16" : "32x32"
+          }/${icon}.png`
+        );
+        setIconSrc(res.default);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchImage();
+  }, [icon, size]);
   return (
     <Button $size={size} onClick={onClick}>
       <img

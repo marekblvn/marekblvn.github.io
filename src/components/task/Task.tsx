@@ -1,4 +1,4 @@
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import styled from "styled-components";
 
 const TaskItemInner = styled.div`
@@ -68,7 +68,18 @@ function Task({
   active = false,
   onClick = () => {},
 }: TaskProps) {
-  const iconSrc = `/src/assets/icons/16x16/${icon}.png`;
+  const [iconSrc, setIconSrc] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const res = await import(`../../assets/icons/16x16/${icon}.png`);
+        setIconSrc(res.default);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchImage();
+  }, [icon]);
   return (
     <TaskItem $active={active} onClick={onClick}>
       <TaskItemInner>

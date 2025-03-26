@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
+import arrowDownIcon from "../../assets/svg/arrow-down.svg";
+import windowToolIcons from "../../assets/sprites/window-control-icons.png";
+import windowToolsIconsGreyscale from "../../assets/sprites/window-tool-icons-greyscale.png";
 
 const Tools = styled.div`
   display: flex;
@@ -17,7 +20,7 @@ const Tools = styled.div`
 const ToolIcon = styled.div<{ $positionX: number }>`
   width: 20px;
   height: 20px;
-  background-image: url("/src/assets/sprites/window-tool-icons.png");
+  background-image: url(${windowToolIcons});
   background-position-y: 0px;
   background-position-x: ${({ $positionX }) => `${$positionX}px`};
   image-rendering: pixelated;
@@ -53,7 +56,7 @@ const ToolButton = styled.button`
       text-shadow: 1px 1px #fff;
     }
     ${ToolIcon} {
-      background-image: url("/src/assets/sprites/window-tool-icons-greyscale.png");
+      background-image: url(${windowToolsIconsGreyscale});
     }
   }
   &:hover:not(:disabled) {
@@ -249,7 +252,7 @@ function DirectoryToolbar() {
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
             <img
-              src="/src/assets/svg/arrow-down.svg"
+              src={arrowDownIcon}
               alt=""
               width="16px"
               height="16px"
