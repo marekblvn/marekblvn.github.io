@@ -43,6 +43,9 @@ function App() {
           code: program.code,
           icon: program.icon,
           content: program.component,
+          controls: program.controls,
+          fullScreenOnly: program.fullScreenOnly,
+          resizable: program.resizable,
         },
       });
       return;
@@ -70,7 +73,16 @@ function App() {
       </Desktop>
       <Taskbar />
       {state.openedWindows.map((win) => {
-        const { title, icon, code, content, initialPosition } = win;
+        const {
+          title,
+          icon,
+          code,
+          content,
+          initialPosition,
+          controls,
+          fullScreenOnly,
+          resizable,
+        } = win;
         return (
           <Window
             key={code}
@@ -78,8 +90,10 @@ function App() {
             icon={icon}
             initialPosition={initialPosition}
             code={code}
-            controls={["minimize", "maximize", "close"]}
+            controls={controls}
             onClose={(e) => handleCloseWindow(e, code)}
+            fullScreenOnly={fullScreenOnly}
+            resizable={resizable}
           >
             {content}
           </Window>

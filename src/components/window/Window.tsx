@@ -138,6 +138,8 @@ interface WindowProps {
   readonly onHelp?: () => void;
   readonly code?: string;
   readonly initialPosition?: { x: number; y: number };
+  readonly fullScreenOnly?: boolean;
+  readonly resizable?: boolean;
 }
 
 function Window({
@@ -149,10 +151,12 @@ function Window({
   onClose = () => {},
   onHelp = () => {},
   initialPosition = { x: 100, y: 100 },
+  fullScreenOnly = false,
+  resizable = true,
 }: WindowProps) {
   const { state, dispatch } = useWindowManager();
   const [isMinimized, setIsMinimized] = useState(false);
-  const [isMaximized, setIsMaximized] = useState(false);
+  const [isMaximized, setIsMaximized] = useState(fullScreenOnly);
   const [size, setSize] = useState(INITIAL_DIMENSIONS);
   const [position, setPosition] = useState(initialPosition);
   const isResizing = useRef<null | string>(null);
@@ -189,8 +193,8 @@ function Window({
 
   const CONTROL_HANDLERS: Record<string, MouseEventHandler> = {
     minimize: handleMinimizeWindow,
-    maximize: () => setIsMaximized(true),
-    normize: () => setIsMaximized(false),
+    maximize: handleToggleMaximizeWindow,
+    normize: handleToggleMaximizeWindow,
     close: onClose,
     help: onHelp,
   };
@@ -199,6 +203,7 @@ function Window({
     event: React.MouseEvent<HTMLDivElement>,
     direction: string
   ): void {
+    if (!resizable) return;
     event.preventDefault();
     isResizing.current = direction;
     startX.current = event.clientX;
@@ -309,6 +314,11 @@ function Window({
     }
   }
 
+  function handleToggleMaximizeWindow(): void {
+    if (fullScreenOnly) return;
+    setIsMaximized((prev) => !prev);
+  }
+
   function handleMinimizeWindow(): void {
     setIsMinimized(true);
     dispatch({ type: "MINIMIZE_WINDOW", payload: code });
@@ -361,7 +371,7 @@ function Window({
             icon={icon}
             controls={renderControls()}
             onMouseDown={startDrag}
-            onDoubleClick={() => setIsMaximized((prev) => !prev)}
+            onDoubleClick={handleToggleMaximizeWindow}
           />
           {children}
         </WindowInnerFrame>

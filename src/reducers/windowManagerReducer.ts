@@ -1,12 +1,16 @@
 import { ReactElement } from "react";
+import { IconCode } from "../components/window-control-button/WindowControlButton";
 
 export interface WindowData {
-  code: string;
-  title: string;
-  icon: string;
-  content: ReactElement;
-  initialPosition: { x: number; y: number };
+  readonly code: string;
+  readonly title: string;
+  readonly icon: string;
+  readonly content: ReactElement;
+  readonly initialPosition: { x: number; y: number };
+  readonly controls: Array<IconCode>;
   minimized: boolean;
+  readonly fullScreenOnly: boolean;
+  readonly resizable: boolean;
 }
 
 export interface WindowManagerState {
@@ -26,6 +30,9 @@ export type WindowManagerAction =
         icon: string;
         code: string;
         content: ReactElement;
+        controls: Array<IconCode>;
+        fullScreenOnly: boolean;
+        resizable: boolean;
       };
     };
 
@@ -35,7 +42,15 @@ export const windowManagerReducer = (
 ): WindowManagerState => {
   switch (action.type) {
     case "OPEN_WINDOW": {
-      const { title, icon, code, content } = action.payload;
+      const {
+        title,
+        icon,
+        code,
+        content,
+        controls,
+        fullScreenOnly,
+        resizable,
+      } = action.payload;
       const initialPosition = { x: 100, y: 100 };
       state.openedWindows.forEach(() => {
         initialPosition.x += 20;
@@ -48,6 +63,9 @@ export const windowManagerReducer = (
         content: content,
         minimized: false,
         initialPosition: initialPosition,
+        controls: controls,
+        fullScreenOnly: fullScreenOnly,
+        resizable: resizable,
       };
       return {
         openedWindows: [...state.openedWindows, newWindow],
