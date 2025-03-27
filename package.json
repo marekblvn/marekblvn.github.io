@@ -2,7 +2,7 @@
   "name": "marekblvn.github.io",
   "private": true,
   "version": "0.1.0",
-  "homepage": "https://marekblvn.github.io",
+  "homepage": "https://marekblvn.github.io/",
   "type": "module",
   "scripts": {
     "dev": "vite",
