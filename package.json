@@ -10,9 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006 --no-open",
-    "build-storybook": "storybook build",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist -b production"
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "axios": "^1.8.4",
