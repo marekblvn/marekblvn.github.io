@@ -3,6 +3,9 @@ import axios, { AxiosResponse } from "axios";
 const apiInstance = axios.create({
   baseURL: "https://api.github.com/",
   responseType: "json",
+  headers: {
+    Authorization: `token ${import.meta.env.VITE_GITHUB_TOKEN}`,
+  },
 });
 
 type GetUserPublicRepoListParams = { username: string };
