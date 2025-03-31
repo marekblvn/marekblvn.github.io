@@ -13,20 +13,23 @@ interface ResizableProps {
   readonly onResize?: (newSize: Size, newPosition: Position) => void;
   readonly children?: ReactNode;
   readonly ref?: RefObject<HTMLDivElement | null> | null;
+  readonly isMaximized?: boolean;
 }
 
 //#region Styled components
 const ResizableDiv = styled.div.attrs<{
-  $width: number;
-  $height: number;
+  $width: number | string;
+  $height: number | string;
   $left: number;
   $top: number;
   $minWidth: number;
   $minHeight: number;
 }>((props) => ({
   style: {
-    width: `${props.$width}px`,
-    height: `${props.$height}px`,
+    width:
+      typeof props.$width === "number" ? `${props.$width}px` : props.$width,
+    height:
+      typeof props.$height === "number" ? `${props.$height}px` : props.$height,
     top: `${props.$top}px`,
     left: `${props.$left}px`,
     minHeight: `${props.$minWidth}px`,
@@ -43,7 +46,13 @@ const ResizeHandle = styled.div`
   z-index: 1;
 `;
 
-const ResizeHandleTopLeft = styled(ResizeHandle)`
+const ResizeHandleTopLeft = styled(ResizeHandle).attrs<{ $resizable: boolean }>(
+  (props) => ({
+    style: {
+      cursor: props.$resizable ? "nw-resize" : "default",
+    },
+  })
+)`
   top: 0;
   left: 0;
   width: 5px;
@@ -52,34 +61,55 @@ const ResizeHandleTopLeft = styled(ResizeHandle)`
   cursor: nw-resize;
 `;
 
-const ResizeHandleTopRight = styled(ResizeHandle)`
+const ResizeHandleTopRight = styled(ResizeHandle).attrs<{
+  $resizable: boolean;
+}>((props) => ({
+  style: {
+    cursor: props.$resizable ? "ne-resize" : "default",
+  },
+}))`
   top: 0;
   right: 0;
   width: 5px;
   height: 5px;
   z-index: 2;
-  cursor: ne-resize;
 `;
 
-const ResizeHandleBottomLeft = styled(ResizeHandle)`
+const ResizeHandleBottomLeft = styled(ResizeHandle).attrs<{
+  $resizable: boolean;
+}>((props) => ({
+  style: {
+    cursor: props.$resizable ? "sw-resize" : "default",
+  },
+}))`
   bottom: 0;
   left: 0;
   width: 5px;
   height: 5px;
   z-index: 2;
-  cursor: sw-resize;
 `;
 
-const ResizeHandleBottomRight = styled(ResizeHandle)`
+const ResizeHandleBottomRight = styled(ResizeHandle).attrs<{
+  $resizable: boolean;
+}>((props) => ({
+  style: {
+    cursor: props.$resizable ? "se-resize" : "default",
+  },
+}))`
   bottom: 0;
   right: 0;
   width: 5px;
   height: 5px;
   z-index: 2;
-  cursor: se-resize;
 `;
 
-const ResizeHandleTop = styled(ResizeHandle)`
+const ResizeHandleTop = styled(ResizeHandle).attrs<{ $resizable: boolean }>(
+  (props) => ({
+    style: {
+      cursor: props.$resizable ? "n-resize" : "default",
+    },
+  })
+)`
   top: 0;
   left: 0;
   right: 0;
@@ -87,7 +117,13 @@ const ResizeHandleTop = styled(ResizeHandle)`
   cursor: n-resize;
 `;
 
-const ResizeHandleBottom = styled(ResizeHandle)`
+const ResizeHandleBottom = styled(ResizeHandle).attrs<{ $resizable: boolean }>(
+  (props) => ({
+    style: {
+      cursor: props.$resizable ? "s-resize" : "default",
+    },
+  })
+)`
   bottom: 0;
   right: 0;
   left: 0;
@@ -95,7 +131,13 @@ const ResizeHandleBottom = styled(ResizeHandle)`
   cursor: s-resize;
 `;
 
-const ResizeHandleLeft = styled(ResizeHandle)`
+const ResizeHandleLeft = styled(ResizeHandle).attrs<{ $resizable: boolean }>(
+  (props) => ({
+    style: {
+      cursor: props.$resizable ? "w-resize" : "default",
+    },
+  })
+)`
   top: 0;
   bottom: 0;
   left: 0;
@@ -103,7 +145,13 @@ const ResizeHandleLeft = styled(ResizeHandle)`
   cursor: w-resize;
 `;
 
-const ResizeHandleRight = styled(ResizeHandle)`
+const ResizeHandleRight = styled(ResizeHandle).attrs<{ $resizable: boolean }>(
+  (props) => ({
+    style: {
+      cursor: props.$resizable ? "e-resize" : "default",
+    },
+  })
+)`
   top: 0;
   bottom: 0;
   right: 0;
@@ -121,6 +169,7 @@ function Resizable({
   size = { width: 100, height: 100 },
   children = null,
   ref = null,
+  isMaximized = false,
 }: ResizableProps) {
   //#region Properties
   const resizeDirection = useRef<string | null>(null);
@@ -136,7 +185,7 @@ function Resizable({
     event: MouseEvent<HTMLDivElement>,
     direction: string
   ): void => {
-    if (!resizable) return;
+    if (!resizable || isMaximized) return;
     event.preventDefault();
     resizeDirection.current = direction;
     startX.current = event.clientX;
@@ -212,25 +261,45 @@ function Resizable({
   return (
     <ResizableDiv
       ref={ref}
-      $left={position.x}
-      $top={position.y}
-      $width={newWidth.current}
-      $height={newHeight.current}
+      $left={isMaximized ? 0 : position.x}
+      $top={isMaximized ? 0 : position.y}
+      $width={isMaximized ? "100%" : newWidth.current}
+      $height={isMaximized ? "calc(100% - 32px)" : newHeight.current}
       $minWidth={minWidth}
       $minHeight={minHeight}
     >
-      <ResizeHandleTopLeft onMouseDown={(e) => startResize(e, "top-left")} />
-      <ResizeHandleTopRight onMouseDown={(e) => startResize(e, "top-right")} />
+      <ResizeHandleTopLeft
+        $resizable={resizable || !isMaximized}
+        onMouseDown={(e) => startResize(e, "top-left")}
+      />
+      <ResizeHandleTopRight
+        $resizable={resizable || !isMaximized}
+        onMouseDown={(e) => startResize(e, "top-right")}
+      />
       <ResizeHandleBottomLeft
+        $resizable={resizable || !isMaximized}
         onMouseDown={(e) => startResize(e, "bottom-left")}
       />
       <ResizeHandleBottomRight
+        $resizable={resizable || !isMaximized}
         onMouseDown={(e) => startResize(e, "bottom-right")}
       />
-      <ResizeHandleTop onMouseDown={(e) => startResize(e, "top")} />
-      <ResizeHandleBottom onMouseDown={(e) => startResize(e, "bottom")} />
-      <ResizeHandleLeft onMouseDown={(e) => startResize(e, "left")} />
-      <ResizeHandleRight onMouseDown={(e) => startResize(e, "right")} />
+      <ResizeHandleTop
+        $resizable={resizable || !isMaximized}
+        onMouseDown={(e) => startResize(e, "top")}
+      />
+      <ResizeHandleBottom
+        $resizable={resizable || !isMaximized}
+        onMouseDown={(e) => startResize(e, "bottom")}
+      />
+      <ResizeHandleLeft
+        $resizable={resizable || !isMaximized}
+        onMouseDown={(e) => startResize(e, "left")}
+      />
+      <ResizeHandleRight
+        $resizable={resizable || !isMaximized}
+        onMouseDown={(e) => startResize(e, "right")}
+      />
       {children}
     </ResizableDiv>
   );
