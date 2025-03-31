@@ -3,16 +3,17 @@ import Projects from "../programs/projects";
 import GameOfLife from "../programs/game-of-life";
 import LangtonsAnt from "../programs/langtons-ant";
 import { v4 as uuidv4 } from "uuid";
-import { IconCode } from "../components/window-control-button/WindowControlButton";
+import { WindowControlIconCode } from "../components/window-control-button/WindowControlButton";
 
 export interface Program {
   label: string;
   icon: string;
   component: ReactElement;
   code: string;
-  controls: Array<IconCode>;
+  controls: Array<WindowControlIconCode>;
   fullScreenOnly: boolean;
   resizable: boolean;
+  initialSize: { width: number; height: number };
 }
 
 export default [
@@ -24,6 +25,7 @@ export default [
     controls: ["minimize", "maximize", "close"],
     fullScreenOnly: false,
     resizable: true,
+    initialSize: { width: 900, height: 600 },
   },
   {
     label: "Game of Life",
