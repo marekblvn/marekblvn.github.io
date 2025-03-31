@@ -11,10 +11,14 @@ const spriteOffsets = {
   help: "-48px",
 } as const;
 
-export type IconCode = keyof typeof spriteOffsets;
+export type WindowControlIconCode = keyof typeof spriteOffsets;
+export type WindowControlProps = {
+  readonly disabled?: boolean;
+  readonly margin?: string;
+};
 
 interface WindowControlButtonProps {
-  readonly icon?: IconCode;
+  readonly icon: WindowControlIconCode;
   readonly onClick?: MouseEventHandler;
   readonly disabled?: boolean;
   readonly margin?: string;

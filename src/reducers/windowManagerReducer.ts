@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { IconCode } from "../components/window-control-button/WindowControlButton";
+import { WindowControlIconCode } from "../components/window-control-button/WindowControlButton";
 
 export interface WindowData {
   readonly code: string;
@@ -7,7 +7,7 @@ export interface WindowData {
   readonly icon: string;
   readonly content: ReactElement;
   readonly initialPosition: { x: number; y: number };
-  readonly controls: Array<IconCode>;
+  readonly controls: Array<WindowControlIconCode>;
   minimized: boolean;
   readonly fullScreenOnly: boolean;
   readonly resizable: boolean;
@@ -30,7 +30,7 @@ export type WindowManagerAction =
         icon: string;
         code: string;
         content: ReactElement;
-        controls: Array<IconCode>;
+        controls: Array<WindowControlIconCode>;
         fullScreenOnly: boolean;
         resizable: boolean;
       };
