@@ -7,6 +7,7 @@ export interface WindowData {
   readonly icon: string;
   readonly content: ReactElement;
   readonly initialPosition: { x: number; y: number };
+  readonly initialSize: { width: number; height: number };
   readonly controls: Array<WindowControlIconCode>;
   minimized: boolean;
   readonly fullScreenOnly: boolean;
@@ -33,6 +34,7 @@ export type WindowManagerAction =
         controls: Array<WindowControlIconCode>;
         fullScreenOnly: boolean;
         resizable: boolean;
+        initialSize: { width: number; height: number };
       };
     };
 
@@ -50,6 +52,7 @@ export const windowManagerReducer = (
         controls,
         fullScreenOnly,
         resizable,
+        initialSize,
       } = action.payload;
       const initialPosition = { x: 100, y: 100 };
       state.openedWindows.forEach(() => {
@@ -66,6 +69,7 @@ export const windowManagerReducer = (
         controls: controls,
         fullScreenOnly: fullScreenOnly,
         resizable: resizable,
+        initialSize: initialSize,
       };
       return {
         openedWindows: [...state.openedWindows, newWindow],

@@ -1,5 +1,5 @@
-import React, {
-  MouseEventHandler,
+import {
+  MouseEvent,
   ReactElement,
   ReactNode,
   useEffect,
@@ -10,116 +10,20 @@ import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 import WindowTitleBar from "../window-title-bar/WindowTitleBar";
 import WindowControlButton, {
-  IconCode,
+  WindowControlIconCode,
+  WindowControlProps,
 } from "../window-control-button/WindowControlButton";
 import { useWindowManager } from "../../hooks/useWindowManager";
-
-const INITIAL_DIMENSIONS = { width: 900, height: 600 };
-const MIN_WIDTH = 400;
-const MIN_HEIGHT = 300;
-
-const Resizable = styled.div.attrs<{
-  $width: string;
-  $height: string;
-  $left: number;
-  $top: number;
-  $isAnimating: boolean;
-  $isFocused: boolean;
-}>((props) => ({
-  style: {
-    width: props.$width,
-    height: props.$height,
-    top: `${props.$top}px`,
-    left: `${props.$left}px`,
-    transition: props.$isAnimating ? "all 150ms ease-in-out" : "none",
-    zIndex: props.$isFocused ? 100 : 10,
-  },
-}))`
-  position: absolute;
-  min-height: 300px;
-  min-width: 400px;
-  background-color: var(--base-color);
-`;
-
-const ResizeHandle = styled.div`
-  position: absolute;
-  background-color: transparent;
-  z-index: 1;
-`;
-
-const ResizeHandleTopLeft = styled(ResizeHandle)`
-  top: 0;
-  left: 0;
-  width: 5px;
-  height: 5px;
-  z-index: 2;
-  cursor: nw-resize;
-`;
-
-const ResizeHandleTopRight = styled(ResizeHandle)`
-  top: 0;
-  right: 0;
-  width: 5px;
-  height: 5px;
-  z-index: 2;
-  cursor: ne-resize;
-`;
-
-const ResizeHandleBottomLeft = styled(ResizeHandle)`
-  bottom: 0;
-  left: 0;
-  width: 5px;
-  height: 5px;
-  z-index: 2;
-  cursor: sw-resize;
-`;
-
-const ResizeHandleBottomRight = styled(ResizeHandle)`
-  bottom: 0;
-  right: 0;
-  width: 5px;
-  height: 5px;
-  z-index: 2;
-  cursor: se-resize;
-`;
-
-const ResizeHandleTop = styled(ResizeHandle)`
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 5px;
-  cursor: n-resize;
-`;
-
-const ResizeHandleBottom = styled(ResizeHandle)`
-  bottom: 0;
-  right: 0;
-  left: 0;
-  height: 5px;
-  cursor: s-resize;
-`;
-
-const ResizeHandleLeft = styled(ResizeHandle)`
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 5px;
-  cursor: w-resize;
-`;
-
-const ResizeHandleRight = styled(ResizeHandle)`
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: 5px;
-  cursor: e-resize;
-`;
+import Resizable, { Position, Size } from "../resizable/Resizable";
+import Focusable from "../focusable/Focusable";
+import Draggable from "../draggable/Draggable";
 
 const WindowFrame = styled.div`
   border-width: 1px;
   border-style: solid;
   border-color: var(--outer-border-colors);
   height: 100%;
+  user-select: none;
 `;
 
 const WindowInnerFrame = styled.div`
@@ -133,11 +37,13 @@ interface WindowProps {
   readonly title?: string;
   readonly children?: ReactNode;
   readonly icon?: string;
-  readonly controls?: Array<IconCode>;
-  readonly onClose?: MouseEventHandler;
+  readonly controls?: Array<WindowControlIconCode>;
+  readonly controlsProps?: Record<WindowControlIconCode, WindowControlProps>;
+  readonly onClose: (event: MouseEvent, code: string) => void;
   readonly onHelp?: () => void;
   readonly code?: string;
   readonly initialPosition?: { x: number; y: number };
+  readonly initialSize?: Size;
   readonly fullScreenOnly?: boolean;
   readonly resizable?: boolean;
 }
@@ -145,29 +51,44 @@ interface WindowProps {
 function Window({
   children = null,
   title = "Window",
-  controls = [],
+  controls = ["minimize", "maximize", "close"],
+  controlsProps = {
+    close: {
+      disabled: false,
+      margin: "0px",
+    },
+    minimize: {
+      disabled: false,
+      margin: "0px",
+    },
+    maximize: {
+      disabled: false,
+      margin: "0px",
+    },
+    normize: {
+      disabled: false,
+      margin: "0px",
+    },
+    help: {
+      disabled: false,
+      margin: "0px",
+    },
+  },
   icon = "",
   code = "",
-  onClose = () => {},
-  onHelp = () => {},
   initialPosition = { x: 100, y: 100 },
+  initialSize = { width: 400, height: 300 },
   fullScreenOnly = false,
   resizable = true,
-}: WindowProps) {
+  onClose,
+  onHelp = () => {},
+}: Readonly<WindowProps>) {
   const { state, dispatch } = useWindowManager();
   const [isMinimized, setIsMinimized] = useState(false);
   const [isMaximized, setIsMaximized] = useState(fullScreenOnly);
-  const [size, setSize] = useState(INITIAL_DIMENSIONS);
+  const [size, setSize] = useState(initialSize);
+  const sizeRef = useRef<Size>(size);
   const [position, setPosition] = useState(initialPosition);
-  const isResizing = useRef<null | string>(null);
-  const isDragging = useRef<boolean>(false);
-  const newWidth = useRef(size.width);
-  const newHeight = useRef(size.height);
-  const startX = useRef(0);
-  const startY = useRef(0);
-  const startWidth = useRef(0);
-  const startHeight = useRef(0);
-  const windowRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (state.focusedWindowCode === code && isMinimized) {
@@ -175,137 +96,30 @@ function Window({
     }
   }, [state.focusedWindowCode, code, isMinimized]);
 
-  useEffect(() => {
-    function handleClickOutside(event: globalThis.MouseEvent): void {
-      if (
-        windowRef.current &&
-        !windowRef.current.contains(event.target as Node) &&
-        state.focusedWindowCode === code
-      ) {
-        dispatch({ type: "UNFOCUS_WINDOW", payload: null });
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [state.focusedWindowCode, code, dispatch]);
-
-  const CONTROL_HANDLERS: Record<string, MouseEventHandler> = {
+  const CONTROL_HANDLERS = {
+    close: handleCloseWindow,
+    help: onHelp,
     minimize: handleMinimizeWindow,
     maximize: handleToggleMaximizeWindow,
     normize: handleToggleMaximizeWindow,
-    close: onClose,
-    help: onHelp,
   };
 
-  function startResize(
-    event: React.MouseEvent<HTMLDivElement>,
-    direction: string
-  ): void {
-    if (!resizable) return;
-    event.preventDefault();
-    isResizing.current = direction;
-    startX.current = event.clientX;
-    startY.current = event.clientY;
-    startWidth.current = size.width;
-    startHeight.current = size.height;
-    document.addEventListener("mousemove", handleResize);
-    document.addEventListener("mouseup", stopResize);
-  }
-
-  function startDrag(event: React.MouseEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-    isDragging.current = true;
-    startX.current = event.clientX;
-    startY.current = event.clientY;
-    window.addEventListener("mousemove", handleDrag);
-    window.addEventListener("mouseup", stopDrag);
-  }
-
-  function handleResize(event: globalThis.MouseEvent): void {
-    if (!isResizing.current || isMaximized) return;
-    const dx = event.clientX - startX.current;
-    const dy = event.clientY - startY.current;
-    let updatedWidth = startWidth.current;
-    let updatedHeight = startHeight.current;
-    let updatedX = position.x;
-    let updatedY = position.y;
-
-    switch (isResizing.current) {
-      case "right":
-        updatedWidth = Math.max(MIN_WIDTH, startWidth.current + dx);
-        break;
-      case "left":
-        updatedWidth = Math.max(MIN_WIDTH, startWidth.current - dx);
-        updatedX = position.x + size.width - updatedWidth;
-        break;
-      case "bottom":
-        updatedHeight = Math.max(MIN_HEIGHT, startHeight.current + dy);
-        break;
-      case "top":
-        updatedHeight = Math.max(MIN_HEIGHT, startHeight.current - dy);
-        updatedY = position.y + size.height - updatedHeight;
-        break;
-      case "bottom-right":
-        updatedWidth = Math.max(MIN_WIDTH, startWidth.current + dx);
-        updatedHeight = Math.max(MIN_HEIGHT, startHeight.current + dy);
-        break;
-      case "bottom-left":
-        updatedWidth = Math.max(MIN_WIDTH, startWidth.current - dx);
-        updatedX = position.x + size.width - updatedWidth;
-        updatedHeight = Math.max(MIN_HEIGHT, startHeight.current + dy);
-        break;
-      case "top-right":
-        updatedWidth = Math.max(MIN_WIDTH, startWidth.current + dx);
-        updatedHeight = Math.max(MIN_HEIGHT, startHeight.current - dy);
-        updatedY = position.y + size.height - updatedHeight;
-        break;
-      case "top-left":
-        updatedWidth = Math.max(MIN_WIDTH, startWidth.current - dy);
-        updatedX = position.x + size.width - updatedWidth;
-        updatedHeight = Math.max(MIN_HEIGHT, startHeight.current - dy);
-        updatedY = position.y + size.height - updatedHeight;
-        break;
-    }
-
-    newWidth.current = updatedWidth;
-    newHeight.current = updatedHeight;
-
+  const handleResize = (newSize: Size, newPosition: Position): void => {
     setSize((prev) =>
-      prev.width !== updatedWidth || prev.height !== updatedHeight
-        ? { width: updatedWidth, height: updatedHeight }
+      prev.width !== newSize.width || prev.height !== newSize.height
+        ? newSize
         : prev
     );
     setPosition((prev) =>
-      prev.x !== updatedX || prev.y !== updatedY
-        ? { x: updatedX, y: updatedY }
-        : prev
+      prev.x !== newPosition.x || prev.y !== newPosition.y ? newPosition : prev
     );
-  }
+    sizeRef.current = size;
+  };
 
-  function handleDrag(event: globalThis.MouseEvent): void {
-    if (!isDragging.current || isMaximized) return;
-    const dx = event.clientX - startX.current;
-    const dy = event.clientY - startY.current;
-    const newX = Math.max(0, position.x + dx);
-    const newY = Math.max(0, position.y + dy);
+  function handleDrag(newPosition: Position): void {
     setPosition((prev) =>
-      prev.x !== newX || prev.y !== newY ? { x: newX, y: newY } : prev
+      prev.x !== newPosition.x || prev.y !== newPosition.y ? newPosition : prev
     );
-  }
-
-  function stopResize(): void {
-    isResizing.current = null;
-    document.removeEventListener("mousemove", handleResize);
-    document.removeEventListener("mouseup", stopResize);
-  }
-
-  function stopDrag(): void {
-    isDragging.current = false;
-    window.removeEventListener("mousemove", handleDrag);
-    window.removeEventListener("mouseup", stopDrag);
   }
 
   function regainFocus(): void {
@@ -324,14 +138,21 @@ function Window({
     dispatch({ type: "MINIMIZE_WINDOW", payload: code });
   }
 
+  function handleCloseWindow(event: MouseEvent): void {
+    onClose(event, code);
+  }
+
   function renderControls(): Array<ReactElement> {
     return controls.map((control) => {
+      const { disabled, margin } = controlsProps[control];
       const ctrl = isMaximized && control === "maximize" ? "normize" : control;
       return (
         <WindowControlButton
           key={uuidv4()}
           icon={ctrl}
-          onClick={CONTROL_HANDLERS[ctrl]}
+          onClick={CONTROL_HANDLERS[control] || (() => {})}
+          disabled={disabled}
+          margin={margin}
         />
       );
     });
@@ -339,43 +160,28 @@ function Window({
 
   return (
     <Resizable
-      ref={windowRef}
-      $isFocused={state.focusedWindowCode === code}
-      $left={isMaximized ? 0 : position.x}
-      $top={isMaximized ? 0 : position.y}
-      $width={isMaximized ? "100%" : `${newWidth.current}px`}
-      $height={isMaximized ? "calc(100% - 33px)" : `${newHeight.current}px`}
-      $isAnimating={isMaximized}
-      style={{
-        visibility: isMinimized ? "hidden" : "visible",
-      }}
-      onClick={regainFocus}
+      onResize={handleResize}
+      position={position}
+      size={size}
+      resizable={isMaximized ? false : resizable}
+      isMaximized={isMaximized}
     >
-      <ResizeHandleTopLeft onMouseDown={(e) => startResize(e, "top-left")} />
-      <ResizeHandleTopRight onMouseDown={(e) => startResize(e, "top-right")} />
-      <ResizeHandleBottomLeft
-        onMouseDown={(e) => startResize(e, "bottom-left")}
-      />
-      <ResizeHandleBottomRight
-        onMouseDown={(e) => startResize(e, "bottom-right")}
-      />
-      <ResizeHandleTop onMouseDown={(e) => startResize(e, "top")} />
-      <ResizeHandleBottom onMouseDown={(e) => startResize(e, "bottom")} />
-      <ResizeHandleLeft onMouseDown={(e) => startResize(e, "left")} />
-      <ResizeHandleRight onMouseDown={(e) => startResize(e, "right")} />
-      <WindowFrame>
-        <WindowInnerFrame>
-          <WindowTitleBar
-            isFocused={state.focusedWindowCode === code}
-            title={title}
-            icon={icon}
-            controls={renderControls()}
-            onMouseDown={startDrag}
-            onDoubleClick={handleToggleMaximizeWindow}
-          />
-          {children}
-        </WindowInnerFrame>
-      </WindowFrame>
+      <Focusable onFocus={regainFocus} code={code}>
+        <WindowFrame>
+          <WindowInnerFrame onClick={regainFocus}>
+            <Draggable onDrag={handleDrag} position={position}>
+              <WindowTitleBar
+                isFocused={state.focusedWindowCode === code}
+                title={title}
+                icon={icon}
+                controls={renderControls()}
+                onDoubleClick={handleToggleMaximizeWindow}
+              />
+            </Draggable>
+            {children}
+          </WindowInnerFrame>
+        </WindowFrame>
+      </Focusable>
     </Resizable>
   );
 }

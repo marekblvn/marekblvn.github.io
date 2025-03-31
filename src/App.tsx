@@ -46,6 +46,7 @@ function App() {
           controls: program.controls,
           fullScreenOnly: program.fullScreenOnly,
           resizable: program.resizable,
+          initialSize: program.initialSize,
         },
       });
       return;
@@ -79,19 +80,21 @@ function App() {
           code,
           content,
           initialPosition,
+          initialSize,
           controls,
           fullScreenOnly,
           resizable,
         } = win;
         return (
           <Window
+            initialSize={initialSize}
             key={code}
             title={title}
             icon={icon}
             initialPosition={initialPosition}
             code={code}
             controls={controls}
-            onClose={(e) => handleCloseWindow(e, code)}
+            onClose={(event) => handleCloseWindow(event, code)}
             fullScreenOnly={fullScreenOnly}
             resizable={resizable}
           >

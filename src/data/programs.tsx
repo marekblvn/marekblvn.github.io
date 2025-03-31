@@ -13,6 +13,7 @@ export interface Program {
   controls: Array<WindowControlIconCode>;
   fullScreenOnly: boolean;
   resizable: boolean;
+  initialSize: { width: number; height: number };
 }
 
 export default [
@@ -24,6 +25,7 @@ export default [
     controls: ["minimize", "maximize", "close"],
     fullScreenOnly: false,
     resizable: true,
+    initialSize: { width: 900, height: 600 },
   },
   {
     label: "Game of Life",
